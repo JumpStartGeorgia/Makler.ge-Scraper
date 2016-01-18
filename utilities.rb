@@ -163,7 +163,7 @@ def json_template
   json[:property_type] = nil
   json[:date] = nil
   json[:additional_info] = nil
-  
+
   json[:details] = {}
   json[:details][:daily_rent] = nil
   json[:details][:for_rent] = nil
@@ -254,7 +254,7 @@ end
 # determine the type of page being viewed
 def get_page_type(text, locale_id)
   key = get_locale_key(locale_id)
-  if !key.nil?  
+  if !key.nil?
     type = @locales[key][:types].values.select{|x| text.downcase.index(x) == 0}
     if !type.nil?
       return type.first
@@ -265,7 +265,7 @@ end
 # determine the property type of page being viewed
 def get_property_type(text, locale_id)
   key = get_locale_key(locale_id)
-  if !key.nil?  
+  if !key.nil?
     type = @locales[key][:property_types].values.select{|x| !text.downcase.index(x).nil?}
     if !type.nil?
       return type.first
@@ -279,16 +279,16 @@ def get_param_value(url, key)
   index_q = url.index('?')
   if !index_q.nil?
     url_params = url.split('?').last
-    
+
     if !url_params.nil?
       params = url_params.split('&')
-    
+
       if !params.nil?
         param = params.select{|x| x.index(key + '=') == 0}
         if !param.nil?
           value = param.first.split('=')[1]
         end
-      
+
       end
     end
   end
@@ -318,11 +318,11 @@ end
 # determine if ther eare any json ids to process
 def num_json_ids_to_process
   count = 0
-  
+
   @locales.keys.each do |locale|
     count += @status['ids_to_process']['json'][locale.to_s].length
   end
-  
+
   return count
 end
 
@@ -334,7 +334,7 @@ def save_new_status_ids(ids)
         @status['ids_to_process'][key][locale.to_s].flatten!
       end
     end
-    update_status  
+    update_status
   end
 end
 
@@ -362,7 +362,7 @@ def pull_out_ids(search_results, record_last_id_status=false)
   search_results.each_with_index do |search_result, index|
     id = get_param_value(search_result['href'], 'id')
     if !id.nil?
-      if !recorded_first_id 
+      if !recorded_first_id
         # if this is a new id, update the status
         # else, stop for we found the id of one that is already processed
         if @status['last_id_processed'].last == id
@@ -376,7 +376,7 @@ def pull_out_ids(search_results, record_last_id_status=false)
       end
       # if we find the id that was process during the last run, stop
       # for we have found all of the new ids
-      if @status['last_id_processed'].length > 1 && 
+      if @status['last_id_processed'].length > 1 &&
             id == @status['last_id_processed'][@status['last_id_processed'].length-2]
 
         @found_all_ids = true
@@ -384,7 +384,7 @@ def pull_out_ids(search_results, record_last_id_status=false)
       end
       ids << id
     end
-  end  
+  end
 
   save_new_status_ids(ids) if ids.length > 0
 end
@@ -395,13 +395,13 @@ def create_sql_insert(mysql, json, source, locale)
   fields = []
   values = []
   sql = nil
-  
+
   fields << 'source'
   values << source
 
   fields << 'locale'
   values << locale
-  
+
   fields << 'created_at'
   values << Time.now
 
@@ -679,7 +679,7 @@ def create_sql_insert(mysql, json, source, locale)
     sql << values.map{|x| "\"#{mysql.escape(x.to_s)}\""}.join(', ')
     sql << ")"
   end
-  
+
   return sql
 end
 
