@@ -29,8 +29,8 @@ class ScraperReport
   def body
     <<-REPORT_BODY
     Makler.Ge Scraper: Scrape Report
-
     Date: #{date}
+
     Number of records gathered: #{number_records_gathered.to_s}
     REPORT_BODY
   end
