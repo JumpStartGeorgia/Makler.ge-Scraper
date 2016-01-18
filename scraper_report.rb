@@ -4,6 +4,8 @@ require_relative 'mail_config'
 
 class ScraperReport
   def initialize
+    @date = Time.now.strftime('%F')
+    @number_records_gathered = 'Unknown (never set by scraper)'
   end
 
   def send_email
@@ -20,10 +22,14 @@ class ScraperReport
 
   private
 
+  attr_reader :date, :number_records_gathered
+
   def body
     <<-REPORT_BODY
     Makler.Ge Scraper: Scrape Report
 
+    Date: #{date}
+    Number of records gathered: #{number_records_gathered}
     REPORT_BODY
   end
 end
