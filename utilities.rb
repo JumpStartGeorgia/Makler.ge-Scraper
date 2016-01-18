@@ -18,6 +18,8 @@ require 'subexec'
 
 @non_number_price_text = ['Price Negotiable', 'ფასი შეთანხმებით']
 
+@scraper_report = ScraperReport.new
+
 # file paths
 @data_path = 'data/makler.ge/'
 @response_file = 'response.html'

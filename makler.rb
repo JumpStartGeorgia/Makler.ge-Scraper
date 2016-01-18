@@ -381,6 +381,9 @@ def make_requests
             # now push to git
             update_github
 
+            # now send email report about scraper
+            @scraper_report.send_email
+
           elsif total_left_to_process % 200 == 0
             puts "There are #{total_left_to_process} files left to process; time so far = #{Time.now - @start} seconds"
           end
