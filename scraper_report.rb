@@ -11,9 +11,19 @@ class ScraperReport
       from    'info@jumpstart.ge'
       to      'nathan.shane@jumpstart.ge'
       subject 'Makler.ge Scraper Report'
-      body    'This is the body of the report'
     end
 
+    mail[:body] = body
+
     mail.deliver!
+  end
+
+  private
+
+  def body
+    <<-REPORT_BODY
+    Makler.Ge Scraper: Scrape Report
+
+    REPORT_BODY
   end
 end
