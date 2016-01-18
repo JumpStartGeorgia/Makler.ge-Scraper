@@ -29,7 +29,7 @@ require_relative 'database'
 @log.info "**********************************************"
 
 
-# starting url 
+# starting url
 @posting_url = "http://makler.ge/?pg=ann&id="
 @serach_url = "http://makler.ge/?pg=search&cat=-1&tp=-1&city_id=-1&raion_id=0&price_f=&price_t=&valuta=2&sart_f=&sart_t=&rooms_f=&rooms_t=&ubani_id=0&street_id=0&parti_f=&parti_t=&mdgomareoba=0&remont=0&project=0&xedi=0&metro_id=0&is_detailed_search=2&sb=d"
 @page_param = "&p="
@@ -51,12 +51,12 @@ def process_response(response)
   id = get_param_value(response.request.url, 'id')
   locale = get_param_value(response.request.url, 'lan')
   locale_key = get_locale_key(locale)
-  
+
   if id.nil? || locale.nil? || locale_key.nil?
     @log.error "response url is not in expected format: #{response.request.url}; expected url to have params of 'id' and 'lan'"
     return
   end
-  
+
   # get the name of the folder for this id
   # - the name is the id minus it's last 3 digits
   id_folder = get_parent_id_folder(id)
@@ -64,7 +64,7 @@ def process_response(response)
 
   # get the response body
   doc = Nokogiri::HTML(response.body)
-    
+
   if doc.css('td.table_content').length != 2
     @log.error "the response does not have any content to process"
     return
@@ -74,19 +74,19 @@ def process_response(response)
   file_path = folder_path + @response_file
 	create_directory(File.dirname(file_path))
   File.open(file_path, 'w'){|f| f.write(doc)}
-    
+
   # create the json
   json = json_template
-  
+
   json[:posting_id] = id
   json[:locale] = locale_key.to_s
-  
+
   # get the type/date
   header_row = doc.css('.div_for_content > .page_title')
   if header_row.length > 0
     span = header_row.css('span')
     if span.length == 0
-      # the title is not correct so assume this is 
+      # the title is not correct so assume this is
       # not a page that can be processed.
       # remove the id from the status list to indicate it was processed
       remove_status_json_id(id, locale_key.to_s)
@@ -94,7 +94,7 @@ def process_response(response)
       @log.warn "the id #{id} with language #{locale} does not have any data"
 
       return
-    end 
+    end
     type_text = span[0].xpath('text()').text.strip
     json[:type] = get_page_type(type_text, locale).to_s
     json[:property_type] = get_property_type(type_text, locale).to_s
@@ -103,7 +103,7 @@ def process_response(response)
     # need to convert from dd/mm/yyyy to yyyy-mm-dd
     json[:date] = Date.strptime(date, '%d.%m.%Y').strftime
   end
-  
+
   # details info
   details_titles = doc.css('td.mc_title')
   details_values = doc.css('td.mc_title + td')
@@ -115,16 +115,16 @@ def process_response(response)
       if index
         # get the key name for this text
         key = @locales[locale_key][:keys][:details].keys[index]
-        
+
         # save the value
-        json[:details][key] = details_values[title_index].text.strip    
-        
+        json[:details][key] = details_values[title_index].text.strip
+
         if !json[:details][key].nil? && json[:details][key].length > 0
           # if this is a sale price, pull out the price and price per sq meter
           if @sale_keys.include?(key) && !@non_number_price_text.include?(json[:details][key])
             prices = json[:details][key].split('/')
             price_ary = prices[0].strip.split(' ')
-            
+
             json[:details][:sale_price] = price_ary[0].strip
             json[:details][:sale_price_currency] = price_ary[1].strip if !price_ary[1].nil?
 
@@ -139,7 +139,7 @@ def process_response(response)
               if !currency_index.nil?
                 # exchange rate
                 json[:details][:sale_price_exchange_rate_to_dollars] = @currencies.values[currency_index]
-                
+
                 # price
                 if !json[:details][:sale_price].nil?
                   price = json[:details][:sale_price].to_f
@@ -154,16 +154,16 @@ def process_response(response)
                 @missing_param_log.error "Missing currency exchange #{json[:details][:sale_price_currency]} in record #{id}"
               end
             end
-            
+
 
           # if this is a rent price, pull out the price and price per sq meter
           elsif @rent_keys.include?(key) && !@non_number_price_text.include?(json[:details][key])
             prices = json[:details][key].split('/')
             price_ary = prices[0].strip.split(' ')
-            
+
             json[:details][:rent_price] = price_ary[0].strip
             json[:details][:rent_price_currency] = price_ary[1].strip if !price_ary[1].nil?
-            
+
             # if price per sq meter present, save it
             if prices.length > 1
               json[:details][:rent_price_sq_meter] = prices[1].strip.split(' ')[0].strip
@@ -221,7 +221,7 @@ def process_response(response)
       else
         @missing_param_log.error "Missing detail json key for text: '#{title_text}' in record #{id}"
       end
-    end      
+    end
   end
 
   # spec info
@@ -236,7 +236,7 @@ def process_response(response)
         # get the key name for this text
         key = @locales[locale_key][:keys][:specs].keys[index]
         # save the value
-        json[:specs][key] = specs_values[title_index].text.strip    
+        json[:specs][key] = specs_values[title_index].text.strip
       else
         @missing_param_log.error "Missing spec json key for text: '#{title_text}' in record #{id}"
       end
@@ -259,7 +259,7 @@ def process_response(response)
         # if this is not the additional info section, stop
         break if index == 0 && td.text.strip.downcase != @locales[locale_key][:keys][:additional_info]
         if index > 0
-          text = td.text.strip 
+          text = td.text.strip
           if text != @nbsp
             if json[:additional_info].nil?
               json[:additional_info] = text
@@ -278,7 +278,7 @@ def process_response(response)
     create_directory(File.dirname(file_path))
     File.open(file_path, 'w'){|f| f.write(json.to_json)}
   end
-  
+
   # remove the id from the status list to indicate it was processed
   remove_status_json_id(id, locale_key.to_s)
 end
@@ -302,7 +302,7 @@ def make_requests
   if pagination_links.length > 0
     last_page = get_param_value(pagination_links[pagination_links.length-1]['href'], 'p')
   end
-  last_page = last_page.to_i if !last_page.nil?  
+  last_page = last_page.to_i if !last_page.nil?
 
   # get all of the ids that are new since the last run
   i = 1
@@ -310,10 +310,10 @@ def make_requests
     puts "page #{i}"
     # create the url
     url = @serach_url + @lang_param + @locales[:ka][:id] + @page_param + i.to_s
-  
+
     # get the html
     doc = Nokogiri::HTML(open(url))
-   
+
     # pull out the links for this page
     search_results = doc.css('td.table_content div.main_search div.ann_thmb a')
 
@@ -322,21 +322,21 @@ def make_requests
       @log.error "the response does not have any content to process for url #{url}"
       break
     end
-    
+
     # get the ids for this page
     pull_out_ids(search_results, i == 1)
-    
+
     i+=1
   end
 
   num_ids = num_json_ids_to_process
-  
+
   if num_ids == 0
     @log.warn "There are no new IDs to process so stopping"
     return
   end
 
-  # record total number of records to process 
+  # record total number of records to process
   total_to_process = num_ids
   total_left_to_process = num_ids
 
@@ -354,8 +354,8 @@ def make_requests
           if response.success?
             # put success callback here
             @log.info("#{response.request.url} - success")
-            
-            # process the response        
+
+            # process the response
             process_response(response)
           elsif response.timed_out?
             # aw hell no
@@ -367,7 +367,7 @@ def make_requests
             # Received a non-successful http response.
             @log.error("#{response.request.url} - HTTP request failed: #{response.code.to_s}")
           end
-          
+
           # decrease counter of items to process
           total_left_to_process -= 1
           if total_left_to_process == 0
@@ -396,5 +396,3 @@ end
 
 # run the script
 make_requests
-
-
