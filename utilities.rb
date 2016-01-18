@@ -24,6 +24,7 @@ require 'subexec'
 @json_file = 'data.json'
 @db_config_path = 'database.yml'
 @status_file = 'status.json'
+@db_dump_file = 'real-estate.sql.gz'
 
 # which languages to process
 # georgian
@@ -699,7 +700,7 @@ def dump_database(db_config, log)
   log.info "------------------------------"
   log.info "dumping database"
   log.info "------------------------------"
-  Subexec.run "mysqldump -u'#{db_config["username"]}' -p'#{db_config["password"]}' #{db_config["database"]} | gzip > \"#{db_config["database"]}.sql.gz\" "
+  Subexec.run "mysqldump -u'#{db_config["username"]}' -p'#{db_config["password"]}' #{db_config["database"]} | gzip > \"#{@db_dump_file}\" "
 end
 
 
@@ -708,10 +709,7 @@ def update_github
   @log.info "------------------------------"
   @log.info "updating git"
   @log.info "------------------------------"
-
-  db_dump_file = 'real-estate.sql.gz'
-
-  x = Subexec.run "git add #{db_dump_file}"
+  x = Subexec.run "git add #{@db_dump_file}"
   x = Subexec.run "git commit -m 'Updated database dump file with new makler.ge data from #{Time.now.strftime('%F')}'"
   x = Subexec.run "git push origin master"
 end
