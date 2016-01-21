@@ -347,6 +347,8 @@ def make_requests
     if @status['ids_to_process']['json'][locale.to_s].length > 0
       ids = @status['ids_to_process']['json'][locale.to_s].dup
       ids.each do |id|
+        @statistics_sheet.increase_num_ids_processed_by_1
+
         # build the url
         url = @posting_url + id + @lang_param + @locales[locale][:id]
         request = Typhoeus::Request.new("#{url}", followlocation: true)
@@ -356,17 +358,22 @@ def make_requests
             # put success callback here
             @log.info("#{response.request.url} - success")
 
+            @statistics_sheet.increase_num_ids_successfully_processed_by_1
+
             # process the response
             process_response(response)
           elsif response.timed_out?
             # aw hell no
             @log.warn("#{response.request.url} - got a time out")
+            @statistics_sheet.increase_num_ids_timed_out_by_1
           elsif response.code == 0
             # Could not get an http response, something's wrong.
             @log.error("#{response.request.url} - no response: #{response.return_message}")
+            @statistics_sheet.increase_num_ids_with_no_response_by_1
           else
             # Received a non-successful http response.
             @log.error("#{response.request.url} - HTTP request failed: #{response.code.to_s}")
+            @statistics_sheet.increase_num_ids_with_http_request_failure_by_1
           end
 
           # decrease counter of items to process

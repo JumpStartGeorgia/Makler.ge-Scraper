@@ -22,7 +22,7 @@ class ScraperReport
 
   private
 
-  attr_reader :date, :number_records_gathered, :statistics_sheet
+  attr_reader :date, :statistics_sheet
 
   def body
     <<-REPORT_BODY
