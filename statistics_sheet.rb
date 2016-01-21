@@ -9,4 +9,10 @@ class StatisticsSheet
   end
 
   attr_reader :number_records_gathered
+
+  def to_s
+    <<-STRING
+      Number of records gathered: #{number_records_gathered.to_s}
+    STRING
+  end
 end

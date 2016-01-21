@@ -29,7 +29,7 @@ class ScraperReport
     Makler.Ge Scraper: Scrape Report
     Date: #{date}
 
-    Number of records gathered: #{statistics_sheet.number_records_gathered.to_s}
+    #{statistics_sheet.to_s}
     REPORT_BODY
   end
 end
