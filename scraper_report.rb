@@ -20,11 +20,14 @@ class ScraperReport
     mail.deliver!
   end
 
-  attr_accessor :number_records_gathered
+  def increase_number_records_gathered_by_1
+    @number_records_gathered += 1
+  end
 
   private
 
   attr_reader :date
+  attr_reader :number_records_gathered
 
   def body
     <<-REPORT_BODY
