@@ -3,9 +3,9 @@ require 'mail'
 require_relative 'mail_config'
 
 class ScraperReport
-  def initialize
+  def initialize(statistics_sheet)
     @date = Time.now.strftime('%F')
-    @number_records_gathered = 0
+    @statistics_sheet = statistics_sheet
   end
 
   def send_email
@@ -20,21 +20,16 @@ class ScraperReport
     mail.deliver!
   end
 
-  def increase_number_records_gathered_by_1
-    @number_records_gathered += 1
-  end
-
   private
 
-  attr_reader :date
-  attr_reader :number_records_gathered
+  attr_reader :date, :number_records_gathered, :statistics_sheet
 
   def body
     <<-REPORT_BODY
     Makler.Ge Scraper: Scrape Report
     Date: #{date}
 
-    Number of records gathered: #{number_records_gathered.to_s}
+    Number of records gathered: #{statistics_sheet.number_records_gathered.to_s}
     REPORT_BODY
   end
 end
