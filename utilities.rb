@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 require 'subexec'
+require 'pry-byebug'
 
 require_relative 'scraper_report'
 
