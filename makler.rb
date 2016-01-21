@@ -389,6 +389,8 @@ def make_requests
             # now push to git
             update_github
 
+            @statistics_sheet.end_scrape_now
+
             # now send email report about scraper
             @scraper_report.send_email
 
