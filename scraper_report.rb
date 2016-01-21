@@ -1,7 +1,7 @@
 require 'mail'
-
 require_relative 'mail_config'
 
+# Shares statistics about scraper run
 class ScraperReport
   def initialize(statistics_sheet)
     @date = Time.now.strftime('%F')

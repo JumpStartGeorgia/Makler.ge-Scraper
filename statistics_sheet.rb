@@ -1,3 +1,4 @@
+# Stores statistics about a scraper run
 class StatisticsSheet
   def initialize
     @number_records_gathered = 0
