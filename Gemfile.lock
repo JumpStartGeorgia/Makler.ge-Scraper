@@ -7,6 +7,9 @@ GEM
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     mime-types (2.99)
+    mini_portile2 (2.0.0)
+    nokogiri (1.6.7.2)
+      mini_portile2 (~> 2.0.0.rc2)
     subexec (0.2.3)
     typhoeus (0.8.0)
       ethon (>= 0.8.0)
@@ -16,5 +19,6 @@ PLATFORMS
 
 DEPENDENCIES
   mail (~> 2.6, >= 2.6.3)
+  nokogiri (~> 1.6, >= 1.6.7.1)
   subexec (~> 0.2.3)
   typhoeus (~> 0.8.0)
