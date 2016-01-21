@@ -1,2 +1,8 @@
+source 'https://rubygems.org'
+
 # for emailing scraper reports
 gem 'mail', '~> 2.6', '>= 2.6.3'
+
+gem 'typhoeus', '~> 0.8.0'
+
+gem 'subexec', '~> 0.2.3'
