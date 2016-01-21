@@ -183,6 +183,7 @@ def update_database
               remove_status_db_id(id, locale)
 
               files_processed += 1
+              @statistics_sheet.increase_num_db_records_saved_by_1
 
               if files_processed % 100 == 0
                 puts "#{files_processed} json files processed so far"
