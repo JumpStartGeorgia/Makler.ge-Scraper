@@ -1,6 +1,8 @@
+require_relative 'makler'
+
 desc 'Run scraper'
 namespace :scraper do
   task :run do
-    puts 'hello'
+    make_requests
   end
 end

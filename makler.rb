@@ -396,6 +396,3 @@ def make_requests
   hydra.run
 
 end
-
-# run the script
-make_requests
