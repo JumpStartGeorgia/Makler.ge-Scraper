@@ -8,9 +8,9 @@
 # - this database.yml file is not saved into the git repository so
 #   passwords are not shared with the world
 # - yml keys:
-#     database: 
-#     username: 
-#     password: 
+#     database:
+#     username:
+#     password:
 #     encoding: utf8
 #     host: localhost
 #     port: 3306
@@ -168,17 +168,17 @@ def update_database
           if File.exists?(file_path)
             # pull in json
             json = JSON.parse(File.read(file_path))
-            
+
             # delete the record if it already exists
             sql = delete_record_sql(mysql, id, locale)
             mysql.query(sql)
-            
+
             # create sql statement
             sql = create_sql_insert(mysql, json, source, locale)
             if !sql.nil?
               # create record
               mysql.query(sql)
-              
+
               # remove the id from the status list to indicate it was processed
               remove_status_db_id(id, locale)
 
@@ -199,7 +199,7 @@ def update_database
 
     # now dump the database
     dump_database(db_config, log)
-    
+
   rescue Mysql2::Error => e
     log.info "+++++++++++++++++++++++++++++++++"
     log.error "Mysql error ##{e.errno}: #{e.error}"
