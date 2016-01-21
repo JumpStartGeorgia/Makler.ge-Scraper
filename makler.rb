@@ -16,6 +16,7 @@ require 'fileutils'
 
 require_relative 'utilities'
 require_relative 'database'
+require_relative 'scraper_report'
 
 
 @start = Time.now

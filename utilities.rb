@@ -3,6 +3,8 @@
 
 require 'subexec'
 
+require_relative 'scraper_report'
+
 # currenct exchange rates to dollar
 @currencies = {}
 @currencies['$'] = 1.00
