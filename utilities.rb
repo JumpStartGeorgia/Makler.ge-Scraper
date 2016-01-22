@@ -5,6 +5,7 @@ require 'subexec'
 require 'pry-byebug'
 
 require_relative 'statistics_sheet'
+require_relative 'error_sheet'
 require_relative 'scraper_report'
 
 # currenct exchange rates to dollar
@@ -23,7 +24,8 @@ require_relative 'scraper_report'
 @non_number_price_text = ['Price Negotiable', 'ფასი შეთანხმებით']
 
 @statistics_sheet = StatisticsSheet.new
-@scraper_report = ScraperReport.new(@statistics_sheet)
+@error_sheet = ErrorSheet.new
+@scraper_report = ScraperReport.new(@statistics_sheet, @error_sheet)
 
 # file paths
 @data_path = 'data/makler.ge/'

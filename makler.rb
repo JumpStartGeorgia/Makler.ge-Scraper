@@ -17,13 +17,22 @@ require 'fileutils'
 require_relative 'utilities'
 require_relative 'database'
 require_relative 'scraper_report'
-
+require_relative 'custom_logger'
 
 @start = Time.now
 
 # log file to record messages
 # delete existing log file
-@log = Logger.new('makler.log')
+
+def create_log(name, file_path)
+  log = CustomLogger.new(name, file_path)
+  @error_sheet.add_log(log)
+
+  log
+end
+
+@log = create_log('Makler Log', 'makler.log')
+
 @missing_param_log = Logger.new('makler_missing_params.log')
 
 @log.info "**********************************************"
@@ -364,7 +373,7 @@ def make_requests
             process_response(response)
           elsif response.timed_out?
             # aw hell no
-            @log.warn("#{response.request.url} - got a time out")
+            @log.error("#{response.request.url} - got a time out")
             @statistics_sheet.increase_num_ids_timed_out_by_1
           elsif response.code == 0
             # Could not get an http response, something's wrong.
@@ -384,17 +393,20 @@ def make_requests
             @log.info "------------------------------"
 
             # now update the database
+            puts 'updating database'
             update_database
 
             # now push to git
+            puts 'pushing database to github'
             update_github
 
             @statistics_sheet.end_scrape_now
 
+            puts 'sending email'
             # now send email report about scraper
             @scraper_report.send_email
 
-          elsif total_left_to_process % 200 == 0
+          elsif total_left_to_process % 5 == 0
             puts "There are #{total_left_to_process} files left to process; time so far = #{Time.now - @start} seconds"
           end
         end
