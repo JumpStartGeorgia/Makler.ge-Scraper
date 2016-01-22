@@ -63,7 +63,8 @@ class StatisticsSheet
 
       --- Report on Requests Made to makler.ge ---
 
-      Number of ids processed: #{num_ids_processed}
+      Total number of ids processed: #{num_ids_processed}
+      
       Number of ids successfully processed: #{num_ids_successfully_processed}
       Number of ids timed out: #{num_ids_timed_out}
       Number of ids with no response: #{num_ids_with_no_response}
