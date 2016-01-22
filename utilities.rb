@@ -411,7 +411,7 @@ def create_sql_insert(mysql, json, source, locale)
   values << locale
 
   fields << 'created_at'
-  values << Time.now
+  values << Time.now.strftime('%Y-%m-%d %H:%M:%S')
 
   if !json["posting_id"].nil?
     fields << 'posting_id'
