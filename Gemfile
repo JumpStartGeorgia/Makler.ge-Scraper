@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+# For environment-specific and secret variables (in .env file)
+gem 'dotenv', '~> 2.0.2'
+
 # for emailing scraper reports
 gem 'mail', '~> 2.6', '>= 2.6.3'
 
