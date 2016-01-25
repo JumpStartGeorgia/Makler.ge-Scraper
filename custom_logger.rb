@@ -32,14 +32,15 @@ class CustomLogger
   def errors_to_s
     if error_messages.empty?
       error_string = "--- #{name}: No errors this time! ---"
+      return "#{error_string}\n\n"
     end
 
-    error_string = "--- #{name}: Errors ---\n"
+    error_string = "--- #{name}: Errors ---\n\n"
     error_messages.each_with_index do |error_message, index|
       error_string << "#{index + 1}. #{error_message}\n"
     end
 
-    error_string
+    "#{error_string}\n\n"
   end
 
   private

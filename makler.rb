@@ -31,9 +31,10 @@ def create_log(name, file_path)
   log
 end
 
+@missing_param_log = create_log('Makler Missing Params Log', 'makler_missing_params.log')
+
 @log = create_log('Makler Log', 'makler.log')
 
-@missing_param_log = Logger.new('makler_missing_params.log')
 
 @log.info "**********************************************"
 @log.info "**********************************************"

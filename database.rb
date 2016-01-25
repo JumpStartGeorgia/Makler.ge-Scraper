@@ -37,7 +37,7 @@ def update_database
   # log file to record messages
   # delete existing log file
   #File.delete('hr.gov.ge.log') if File.exists?('hr.gov.ge.log')
-  log = Logger.new('database.log')
+  log = create_log('Database Log', 'database.log')
 
   log.info "**********************************************"
   log.info "**********************************************"
