@@ -715,6 +715,11 @@ end
 
 # update github with any changes
 def update_github
+  unless environment_is_production
+    puts 'NOT updating github because environment is not production'
+    return false
+  end
+
   @log.info "------------------------------"
   @log.info "updating git"
   @log.info "------------------------------"

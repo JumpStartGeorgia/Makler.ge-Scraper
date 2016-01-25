@@ -6,6 +6,13 @@
 ##########################
 ## SCRAPER FOR makler.ge
 ##########################
+# load .env variables
+require 'dotenv'
+Dotenv.load
+
+def environment_is_production
+  return ENV['ENVIRONMENT'] == 'production'
+end
 
 require 'typhoeus'
 require 'nokogiri'
@@ -18,6 +25,7 @@ require_relative 'utilities'
 require_relative 'database'
 require_relative 'scraper_report'
 require_relative 'custom_logger'
+
 
 @start = Time.now
 

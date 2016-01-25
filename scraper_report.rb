@@ -11,8 +11,8 @@ class ScraperReport
 
   def send_email
     mail = Mail.new do
-      from    'info@jumpstart.ge'
-      to      'nathan.shane@jumpstart.ge'
+      from    ENV['FEEDBACK_FROM_EMAIL']
+      to      ENV['FEEDBACK_TO_EMAIL']
       subject 'Makler.ge Scraper Report'
     end
 
