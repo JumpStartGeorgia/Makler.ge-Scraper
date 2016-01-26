@@ -33,7 +33,7 @@ require_relative 'custom_logger'
 # delete existing log file
 
 def create_log(name, file_path)
-  Dir.mkdir 'log'
+  Dir.mkdir 'log' unless File.exists?('log')
   log = CustomLogger.new(name, "log/#{file_path}")
   @error_sheet.add_log(log)
 
@@ -403,16 +403,13 @@ def make_requests
             @log.info "------------------------------"
 
             # now update the database
-            puts 'updating database'
             update_database
 
             # now push to git
-            puts 'pushing database to github'
             update_github
 
             @statistics_sheet.end_scrape_now
 
-            puts 'sending email'
             # now send email report about scraper
             @scraper_report.send_email
 

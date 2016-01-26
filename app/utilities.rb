@@ -27,11 +27,13 @@ require_relative 'scraper_report'
 @error_sheet = ErrorSheet.new
 @scraper_report = ScraperReport.new(@statistics_sheet, @error_sheet)
 
-# file paths
 @data_path = '../data/makler.ge/'
 @response_file = 'response.html'
 @json_file = 'data.json'
-@db_config_path = '../config/database.yml'
+
+# db_config_path does not have leading '../' because YAML loads the file from where the task
+# was originally called (and not the relative position of this file)
+@db_config_path = 'config/database.yml'
 @status_file = '../status.json'
 @db_dump_file = '../real-estate.sql.gz'
 
@@ -719,6 +721,8 @@ def update_github
     puts 'NOT updating github because environment is not production'
     return false
   end
+
+  puts 'pushing database to github'
 
   @log.info "------------------------------"
   @log.info "updating git"

@@ -30,6 +30,7 @@ require_relative 'utilities'
 
 
 def update_database
+  puts 'updating database'
   source = 'makler.ge'
 
   start = Time.now

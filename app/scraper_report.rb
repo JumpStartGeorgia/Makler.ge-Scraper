@@ -10,6 +10,8 @@ class ScraperReport
   end
 
   def send_email
+    puts 'sending scraper report email'
+
     mail = Mail.new do
       from    ENV['FEEDBACK_FROM_EMAIL']
       to      ENV['FEEDBACK_TO_EMAIL']
