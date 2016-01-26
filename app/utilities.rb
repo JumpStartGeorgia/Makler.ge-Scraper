@@ -2,7 +2,6 @@
 # encoding: utf-8
 
 require 'subexec'
-require 'pry-byebug'
 
 require_relative 'statistics_sheet'
 require_relative 'error_sheet'
@@ -737,4 +736,12 @@ def compress_file(file_path)
   `tar -cvjSf #{compressed_file_path} #{file_path}`
 
   File.delete(file_path)
+end
+
+def reset_status
+  empty_status = '{"last_id_processed":[],"ids_to_process":{"json":{"ka":[],"en":[]},"db":{"ka":[],"en":[]}}}'
+
+  open(@status_file, 'wb') do |file|
+    file.write(empty_status)
+  end
 end

@@ -1,8 +1,12 @@
-require_relative 'app/makler'
+require_relative 'app/scraper'
 
 desc 'Run scraper'
 namespace :scraper do
   task :run do
-    make_requests
+    run_scraper
+  end
+
+  task :test_run do
+    test_run_scraper
   end
 end
