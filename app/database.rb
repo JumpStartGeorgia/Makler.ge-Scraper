@@ -186,6 +186,9 @@ def update_database
               files_processed += 1
               @statistics_sheet.increase_num_db_records_saved_by_1
 
+              ad_date = Date.strptime(json['date'], '%Y-%m-%d')
+              @statistics_sheet.update_saved_records_date_range(ad_date)
+
               if files_processed % 100 == 0
                 puts "#{files_processed} json files processed so far"
               end
