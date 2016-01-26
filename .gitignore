@@ -1,5 +1,5 @@
 
 database.yml
 data/*
-*.log
+log/*
 .env

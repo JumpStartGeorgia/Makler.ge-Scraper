@@ -28,12 +28,12 @@ require_relative 'scraper_report'
 @scraper_report = ScraperReport.new(@statistics_sheet, @error_sheet)
 
 # file paths
-@data_path = 'data/makler.ge/'
+@data_path = '../data/makler.ge/'
 @response_file = 'response.html'
 @json_file = 'data.json'
-@db_config_path = 'database.yml'
-@status_file = 'status.json'
-@db_dump_file = 'real-estate.sql.gz'
+@db_config_path = '../config/database.yml'
+@status_file = '../status.json'
+@db_dump_file = '../real-estate.sql.gz'
 
 # which languages to process
 # georgian

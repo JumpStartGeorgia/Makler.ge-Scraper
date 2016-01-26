@@ -1,4 +1,4 @@
-require_relative 'makler'
+require_relative 'app/makler'
 
 desc 'Run scraper'
 namespace :scraper do
