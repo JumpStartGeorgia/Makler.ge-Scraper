@@ -33,7 +33,8 @@ require_relative 'custom_logger'
 # delete existing log file
 
 def create_log(name, file_path)
-  log = CustomLogger.new(name, file_path)
+  Dir.mkdir 'log'
+  log = CustomLogger.new(name, "log/#{file_path}")
   @error_sheet.add_log(log)
 
   log
