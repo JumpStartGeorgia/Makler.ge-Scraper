@@ -728,3 +728,13 @@ def update_github
   x = Subexec.run "git commit -m 'Updated database dump file and status.json with new makler.ge data from #{Time.now.strftime('%F')}'"
   x = Subexec.run "git push origin master"
 end
+
+def compress_file(file_path)
+  file_name = File.basename(file_path)
+  dir_path = File.dirname(file_path)
+
+  compressed_file_path = "#{dir_path}/#{file_name}.tar.bz2"
+  `tar -cvjSf #{compressed_file_path} #{file_path}`
+
+  File.delete(file_path)
+end

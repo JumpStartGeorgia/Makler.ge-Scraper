@@ -94,6 +94,7 @@ def process_response(response)
   file_path = folder_path + @response_file
 	create_directory(File.dirname(file_path))
   File.open(file_path, 'w'){|f| f.write(doc)}
+  compress_file(file_path)
 
   # create the json
   json = json_template

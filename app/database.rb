@@ -169,6 +169,7 @@ def update_database
           if File.exists?(file_path)
             # pull in json
             json = JSON.parse(File.read(file_path))
+            compress_file(file_path)
 
             # delete the record if it already exists
             sql = delete_record_sql(mysql, id, locale)
