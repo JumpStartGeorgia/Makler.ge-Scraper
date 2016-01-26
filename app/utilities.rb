@@ -745,3 +745,20 @@ def reset_status
     file.write(empty_status)
   end
 end
+
+def compress_data_files
+  if uncompressed_data_files.empty?
+    puts 'Data files are already compressed!'
+    return
+  end
+
+  uncompressed_data_files.each do |file|
+    compress_file(file)
+  end
+end
+
+def uncompressed_data_files
+  html_files = Dir.glob("#{@data_path}/**/*.html")
+  json_files = Dir.glob("#{@data_path}/**/*.json")
+  return html_files + json_files
+end
