@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+# Runs main scraper tasks
+gem 'rake', '~> 10.5'
+
 # For environment-specific and secret variables (in .env file)
 gem 'dotenv', '~> 2.0.2'
 
