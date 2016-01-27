@@ -755,6 +755,9 @@ def reset_status
   open(@status_file, 'wb') do |file|
     file.write(empty_status)
   end
+
+  @status = nil
+  @status = get_status
 end
 
 def reached_max_num_ids_to_scrape
