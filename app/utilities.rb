@@ -33,6 +33,14 @@ require_relative 'scraper_report'
 @status_file = 'status.json'
 @db_dump_file = 'real-estate.sql.gz'
 
+# Tracks the number of ids pulled from ad lists to be scraped;
+# @max_num_ids_to_scrape is compared to this to determine when to stop
+@num_ids_to_scrape = 0
+
+# Set this to limit the number of ids scraped (useful in test run)
+# Note: Scraper likely will not stop precisely at this number
+@max_num_ids_to_scrape = nil
+
 # which languages to process
 # georgian
 @locales = {}
@@ -390,6 +398,9 @@ def pull_out_ids(search_results, record_last_id_status=false)
         @found_all_ids = true
         break
       end
+
+      @num_ids_to_scrape += 1
+
       ids << id
     end
   end
@@ -744,6 +755,10 @@ def reset_status
   open(@status_file, 'wb') do |file|
     file.write(empty_status)
   end
+end
+
+def reached_max_num_ids_to_scrape
+  !@max_num_ids_to_scrape.nil? && @num_ids_to_scrape >= @max_num_ids_to_scrape
 end
 
 def compress_data_files
