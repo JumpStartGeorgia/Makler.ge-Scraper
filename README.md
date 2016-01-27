@@ -12,8 +12,8 @@ This program scrapes real estate data from the site makler.ge and saves it to a 
 
 ## Usage
 
-`rake scraper:run` -> Run the scraper!
-`rake scraper:schedule:run_daily` -> Schedule a cron job to run `rake scraper:run` every day at 4 AM.
+- `rake scraper:run` -> Run the scraper!
+- `rake scraper:schedule:run_daily` -> Schedule a cron job to run `rake scraper:run` every day at 4 AM.
 
 ## Testing
 
