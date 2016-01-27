@@ -780,3 +780,8 @@ def uncompressed_data_files
   json_files = Dir.glob("#{@data_path}/**/*.json")
   return html_files + json_files
 end
+
+def git_checkout_file(file)
+  puts "Running 'git checkout -- #{file}'"
+  `git checkout -- #{file}`
+end

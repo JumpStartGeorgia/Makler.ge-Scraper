@@ -13,6 +13,15 @@ def test_run_scraper
   end
 
   reset_status
+
+  # limit number of ids
   @max_num_ids_to_scrape = 20
+
   make_requests
+
+  # Running the scraper for real updates status file and the db dump file
+  # Checking out the files here prevents them from accidentally getting
+  # committed
+  git_checkout_file(@status_file)
+  git_checkout_file(@db_dump_file)
 end
