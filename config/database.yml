@@ -1,0 +1,7 @@
+host: localhost
+port: 3306
+database: <%= ENV['DATABASE_NAME'] %>
+username: <%= ENV['DATABASE_USERNAME'] %>
+password: <%= ENV['DATABASE_USER_PASSWORD'] %>
+encoding: utf8
+reconnect: true

@@ -24,6 +24,7 @@ require 'mysql2'
 require 'yaml'
 require 'logger'
 require 'json'
+require 'erb'
 
 
 require_relative 'utilities'
@@ -49,7 +50,7 @@ def update_database
     exit
   end
 
-  db_config = YAML.load_file(@db_config_path)
+  db_config = YAML.load(ERB.new(File.read(@db_config_path)).result)
 
   begin
     # create connection
