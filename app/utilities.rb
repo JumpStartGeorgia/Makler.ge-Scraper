@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 require 'subexec'
+require 'zip'
 
 require_relative 'statistics_sheet'
 require_relative 'error_sheet'
@@ -743,8 +744,11 @@ def compress_file(file_path)
   file_name = File.basename(file_path)
   dir_path = File.dirname(file_path)
 
-  compressed_file_path = "#{dir_path}/#{file_name}.tar.bz2"
-  `tar -cvjSf #{compressed_file_path} #{file_path}`
+  compressed_file_path = "#{dir_path}/#{file_name}.zip"
+
+  Zip::File.open(compressed_file_path, Zip::File::CREATE) do |zipfile|
+    zipfile.add(file_name, file_path)
+  end
 
   File.delete(file_path)
 end

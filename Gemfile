@@ -21,3 +21,6 @@ gem 'pry-byebug', '~> 3.3'
 
 # For scheduling the scraper to run on a regular basis
 gem 'whenever', '~> 0.9.4', require: false
+
+# For compressing files
+gem 'rubyzip', '~> 1.1', '>= 1.1.7'
