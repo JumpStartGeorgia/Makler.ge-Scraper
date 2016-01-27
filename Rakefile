@@ -17,7 +17,7 @@ namespace :scraper do
   end
 
   namespace :schedule do
-    desc 'Schedule daily scrape run cron job'
+    desc 'Schedule cron job to scrape daily at 4 AM'
     task :daily_scrape_run do
       `whenever -w`
     end
