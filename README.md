@@ -33,8 +33,8 @@ Check [the code](https://github.com/JumpStartGeorgia/Makler.ge-Scraper/blob/emai
 
 When you run the scraper, the following happens:
 
-1. Choose Ads to Scrape: The scraper checks the status.json for the 'last_id_processed'. Requests are sent to makler.ge's lists of ads to gather ids to be scraped. These ids are saved in the 'ids_to_process'; this continues until the last_id_processed ids are found.
-2. Scrape Ads: Requests are sent to makler.ge to the ads listed in ids_to_process and are saved as `data.json` files in the `data` folder
+1. Choose Ads to Scrape: The scraper checks the status.json for the `last_id_processed`. Requests are sent to makler.ge's lists of ads to gather ids to be scraped. These ids are saved in status.json's `ids_to_process`; this process continues until the last_id_processed ids are found.
+2. Scrape Ads: Requests are sent to makler.ge to the ads listed in `ids_to_process` and are saved as `data.json` files in the `data` folder
 3. Save Ads to Database: The ad data in the `data.json` files created in step two are now saved to the database.
 4. Update Github with New Data: The database is dumped to `real-estate.sql.gz` and pushed to github, along with the new `status.json` file.
 5. Send Email Report on Scraper Run: A report about the scrape run, including basic statistics and logged errors, is sent to the recipient specified in the `.env` file.
