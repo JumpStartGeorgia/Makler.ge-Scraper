@@ -12,11 +12,13 @@ def test_run_scraper
     exit
   end
 
+  # Start with empty status file
   reset_status
 
-  # limit number of ids
+  # Limit number of ads to be scraped
   @max_num_ids_to_scrape = 20
 
+  # Begin scraper run
   make_requests
 
   # Running the scraper for real updates status file and the db dump file
