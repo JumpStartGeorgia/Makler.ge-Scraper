@@ -41,4 +41,7 @@ When you run the scraper, the following happens:
 
 ## The Data
 
-The database is pushed with every scrape run to the github repo. That means you can use what others have already scraped to start out your database of makler.ge real estate data.
+The database is pushed with every scrape run to the github repo. That means you can use what others have already scraped to start out your database of makler.ge real estate data. However, because updating github is built into the app, you will have to do one of the following:
+
+1. Setup your own origin repo on github to receive your new scrape data.
+2. Disable pushes to github.
