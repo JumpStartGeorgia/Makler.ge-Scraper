@@ -15,4 +15,11 @@ namespace :scraper do
   task :compress_data_files do
     compress_data_files
   end
+
+  namespace :schedule do
+    desc 'Schedule daily scrape run cron job'
+    task :daily_scrape_run do
+      `whenever -w`
+    end
+  end
 end
