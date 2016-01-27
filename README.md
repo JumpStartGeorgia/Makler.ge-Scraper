@@ -27,7 +27,7 @@ to manually test the scraper. Differences include:
 - Emails will be sent to mailcatcher
 - Database dump and status.json will not be pushed to github
 
-Check [the code][https://github.com/JumpStartGeorgia/Makler.ge-Scraper/blob/email/app/scraper.rb] for further differences.
+Check [the code](https://github.com/JumpStartGeorgia/Makler.ge-Scraper/blob/email/app/scraper.rb) for further differences.
 
 ## How it Works
 
