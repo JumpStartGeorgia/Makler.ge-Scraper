@@ -2,6 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     byebug (8.2.1)
+    chronic (0.10.2)
     coderay (1.1.0)
     dotenv (2.0.2)
     ethon (0.8.1)
@@ -26,6 +27,8 @@ GEM
     subexec (0.2.3)
     typhoeus (0.8.0)
       ethon (>= 0.8.0)
+    whenever (0.9.4)
+      chronic (>= 0.6.3)
 
 PLATFORMS
   ruby
@@ -38,3 +41,4 @@ DEPENDENCIES
   pry-byebug (~> 3.3)
   subexec (~> 0.2.3)
   typhoeus (~> 0.8.0)
+  whenever (~> 0.9.4)

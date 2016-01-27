@@ -15,3 +15,6 @@ gem 'nokogiri', '~> 1.6', '>= 1.6.7.1'
 gem 'mysql2', '~> 0.4.2'
 
 gem 'pry-byebug', '~> 3.3'
+
+# For scheduling the scraper to run on a regular basis
+gem 'whenever', '~> 0.9.4', require: false
