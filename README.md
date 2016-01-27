@@ -8,7 +8,7 @@ This program scrapes real estate data from the site makler.ge and saves it to a 
 2. `cp .env-example .env`
 3. Fill in `.env` variables. Unless you set ENVIRONMENT to production, emails will be sent to mailcatcher and you can use any fake email addresses you want.
 4. Create mysql database and database user specified in `.env`
-5. Optional: Load data in from compressed database file (`real-estate.sql.gz`). See section "The Data" below
+5. Optional: Load data in from compressed database file (`real-estate.sql.gz`). See section [The Data](https://github.com/JumpStartGeorgia/Makler.ge-Scraper/tree/email#the-data) below
 
 ## Usage
 
