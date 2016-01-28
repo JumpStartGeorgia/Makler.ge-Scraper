@@ -22,4 +22,11 @@ namespace :scraper do
       `bundle exec whenever -w`
     end
   end
+
+  # Useful if data has not been gathered for a long period, and you want to
+  # break up getting the old data into multiple scraper runs
+  desc 'Run scraper, but start gathering IDs at specified page'
+  task :run_from_page, [:start_page_num] do |_t, args|
+    run_scraper_from_page(args[:start_page_num].to_i)
+  end
 end

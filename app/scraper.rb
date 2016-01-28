@@ -27,3 +27,8 @@ def test_run_scraper
   git_checkout_file(@status_file)
   git_checkout_file(@db_dump_file)
 end
+
+def run_scraper_from_page(start_page_num)
+  @start_page_num = start_page_num
+  run_scraper
+end

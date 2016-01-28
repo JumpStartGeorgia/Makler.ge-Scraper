@@ -42,6 +42,11 @@ require_relative 'scraper_report'
 # Note: Scraper likely will not stop precisely at this number
 @max_num_ids_to_scrape = nil
 
+# Set this to the page number where gathering ids should begin.
+# Useful for starting a scrape from an old date in order to break up long
+# scrape runs
+@start_page_num = nil
+
 # which languages to process
 # georgian
 @locales = {}
