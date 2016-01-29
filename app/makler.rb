@@ -326,13 +326,13 @@ def make_requests
   last_page = last_page.to_i if !last_page.nil?
 
   # get all of the ids that are new since the last run
-  if !@start_page_num.nil?
-    i = @start_page_num
+  if @start_page_num.nil?
+    i = 1
   elsif @start_page_num > last_page
     puts "The requested start page doesn't exist!"
     exit
   else
-    i = 1
+    i = @start_page_num
   end
 
   while !@found_all_ids && i <= last_page
