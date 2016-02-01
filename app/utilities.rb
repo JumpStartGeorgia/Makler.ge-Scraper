@@ -76,6 +76,7 @@ require_relative 'scraper_report'
 @locales[:ka][:keys][:details][:land] = 'მიწა'
 @locales[:ka][:keys][:details][:renovation] = 'რემონტი'
 @locales[:ka][:keys][:details][:view] = 'ხედი'
+@locales[:ka][:keys][:details][:metro] = 'მეტრო'
 @locales[:ka][:keys][:details][:project] = 'პროექტი'
 @locales[:ka][:keys][:details][:condition] = 'მდგომარეობა'
 @locales[:ka][:keys][:details][:function] = 'დანიშნულება'
@@ -139,6 +140,7 @@ require_relative 'scraper_report'
 @locales[:en][:keys][:details][:land] = 'land'
 @locales[:en][:keys][:details][:renovation] = 'renovation'
 @locales[:en][:keys][:details][:view] = 'view'
+@locales[:en][:keys][:details][:metro] = 'subway'
 @locales[:en][:keys][:details][:project] = 'project'
 @locales[:en][:keys][:details][:condition] = 'condition'
 @locales[:en][:keys][:details][:function] = 'function'
@@ -209,6 +211,7 @@ def json_template
   json[:details][:land] = nil
   json[:details][:land_measurement] = nil
   json[:details][:renovation] = nil
+  json[:details][:metro] = nil
   json[:details][:view] = nil
   json[:details][:project] = nil
   json[:details][:condition] = nil
@@ -553,6 +556,10 @@ def create_sql_insert(mysql, json, source, locale)
   if !json["details"]["view"].nil?
     fields << 'view'
     values << json["details"]["view"]
+  end
+  if !json["details"]["metro"].nil?
+    fields << 'metro'
+    values << json["details"]["metro"]
   end
   if !json["details"]["project"].nil?
     fields << 'project'

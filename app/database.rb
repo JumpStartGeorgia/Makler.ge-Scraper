@@ -93,6 +93,7 @@ def update_database
           `land_measurement` varchar(20) default null,\
           `renovation` varchar(255) default null,\
           `view` varchar(255) default null,\
+          `metro` varchar(255) default null,\
           `project` varchar(255) default null,\
           `place_condition` varchar(255) default null,\
           `function` varchar(255) default null,\
