@@ -769,8 +769,12 @@ def compress_file(file_path)
 
   compressed_file_path = "#{dir_path}/#{file_name}.zip"
 
-  Zip::File.open(compressed_file_path, Zip::File::CREATE) do |zipfile|
-    zipfile.add(file_name, file_path)
+  begin
+    Zip::File.open(compressed_file_path, Zip::File::CREATE) do |zipfile|
+      zipfile.add(file_name, file_path)
+    end
+  rescue StandardError => e
+    @data_files_log.error "Could not zip #{file_path} ---> #{compressed_file_path}; error: #{e}"
   end
 
   File.delete(file_path)

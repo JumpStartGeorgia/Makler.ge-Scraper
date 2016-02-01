@@ -40,6 +40,8 @@ def create_log(name, file_path)
   log
 end
 
+@data_files_log = create_log('Data Files Log', 'data_files.log')
+
 @missing_param_log = create_log('Makler Missing Params Log', 'makler_missing_params.log')
 
 @log = create_log('Makler Log', 'makler.log')
