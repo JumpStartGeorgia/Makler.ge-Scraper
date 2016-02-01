@@ -370,6 +370,20 @@ def remove_status_db_id(id, locale)
   update_status
 end
 
+def add_status_processed_id(id)
+  @status['last_id_processed'] << id
+  update_status
+end
+
+def status_has_processed_id?(id)
+  @status['last_id_processed'].length > 1 && @status['last_id_processed'].include?(id)
+end
+
+def empty_status_processed_ids
+  @status['last_id_processed'] = []
+  update_status
+end
+
 def update_status
   @status = get_status if @status.nil?
   if File.exists? @status_file
@@ -387,20 +401,17 @@ def pull_out_ids(search_results, record_last_id_status=false)
       if !recorded_first_id
         # if this is a new id, update the status
         # else, stop for we found the id of one that is already processed
-        if @status['last_id_processed'].last == id
+        if status_has_processed_id?(id)
           @found_all_ids = true
           break
         elsif record_last_id_status
-          @status['last_id_processed'] << id
-          update_status
+          add_status_processed_id(id)
         end
         recorded_first_id = true
       end
       # if we find the id that was process during the last run, stop
       # for we have found all of the new ids
-      if @status['last_id_processed'].length > 1 &&
-            id == @status['last_id_processed'][@status['last_id_processed'].length-2]
-
+      if status_has_processed_id?(id)
         @found_all_ids = true
         break
       end

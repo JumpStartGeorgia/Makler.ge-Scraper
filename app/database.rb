@@ -159,6 +159,8 @@ def update_database
     files_processed = 0
     length = @data_path.split('/').length
 
+    empty_status_processed_ids
+
     @locales.keys.each do |locale_key|
       locale = locale_key.to_s
       # if there are any ids for this locale, procss them
@@ -184,6 +186,8 @@ def update_database
 
               # remove the id from the status list to indicate it was processed
               remove_status_db_id(id, locale)
+
+              add_status_processed_id(id)
 
               files_processed += 1
               @statistics_sheet.increase_num_db_records_saved_by_1
