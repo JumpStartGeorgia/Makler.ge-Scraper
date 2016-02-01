@@ -752,7 +752,7 @@ def update_github
   @log.info "updating git"
   @log.info "------------------------------"
   x = Subexec.run "git add #{@db_dump_file} #{@status_file}"
-  x = Subexec.run "git commit -m 'Updated database dump file and status.json with new makler.ge data from #{Time.now.strftime('%F')}'"
+  x = Subexec.run "git commit -m 'Updated database dump file and status.json with new makler.ge data'"
   x = Subexec.run "git push origin master"
 end
 
