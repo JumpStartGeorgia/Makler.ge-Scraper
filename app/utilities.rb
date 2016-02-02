@@ -25,7 +25,6 @@ require_relative 'scraper_report'
 
 @statistics_sheet = StatisticsSheet.new
 @error_sheet = ErrorSheet.new
-@scraper_report = ScraperReport.new(@statistics_sheet, @error_sheet)
 
 @data_path = 'data/makler.ge/'
 @response_file = 'response.html'

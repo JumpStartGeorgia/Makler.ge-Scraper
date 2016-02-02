@@ -1,8 +1,21 @@
 require 'pry-byebug'
 require_relative 'makler'
 
-def run_scraper
+def scraper_main_parts
   make_requests
+end
+
+def run_scraper
+  @scraper_report = ScraperReport.new(@statistics_sheet, @error_sheet)
+
+  begin
+    scraper_main_parts
+  rescue StandardError => e
+    @log.error("Scraper stopped mid-run due to error: #{e}")
+  end
+
+  @statistics_sheet.end_scrape_now
+  @scraper_report.send_email
 end
 
 def test_run_scraper
@@ -19,7 +32,7 @@ def test_run_scraper
   @max_num_ids_to_scrape = 20
 
   # Begin scraper run
-  make_requests
+  run_scraper
 
   # Running the scraper for real updates status file and the db dump file
   # Checking out the files here prevents them from accidentally getting
