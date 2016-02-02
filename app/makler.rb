@@ -421,7 +421,7 @@ def make_requests
             # now push to git
             update_github
 
-          elsif total_left_to_process % 5 == 0
+          elsif total_left_to_process % 25 == 0
             puts "There are #{total_left_to_process} files left to process; time so far = #{Time.now - @start} seconds"
           end
         end
