@@ -378,7 +378,7 @@ def add_status_processed_id(id)
 end
 
 def status_has_processed_id?(id)
-  @status['last_id_processed'].length > 1 && @status['last_id_processed'].include?(id)
+  @status['last_id_processed'].length > 0 && @status['last_id_processed'].include?(id)
 end
 
 def empty_status_processed_ids
