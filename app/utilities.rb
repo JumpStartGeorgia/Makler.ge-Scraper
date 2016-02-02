@@ -741,7 +741,7 @@ def dump_database(db_config, log)
   log.info "------------------------------"
   log.info "dumping database"
   log.info "------------------------------"
-  Subexec.run "mysqldump -u'#{db_config["username"]}' -p'#{db_config["password"]}' #{db_config["database"]} | gzip > \"#{@db_dump_file}\" "
+  Subexec.run "mysqldump --single-transaction -u'#{db_config["username"]}' -p'#{db_config["password"]}' #{db_config["database"]} | gzip > \"#{@db_dump_file}\" "
 end
 
 
