@@ -396,19 +396,10 @@ end
 # pull out the id of each property from the link
 def pull_out_ids(search_results)
   ids = []
-  recorded_first_id = false
   search_results.each_with_index do |search_result, index|
     id = get_param_value(search_result['href'], 'id')
     if !id.nil?
-      if !recorded_first_id
-        # if this is a new id, update the status
-        # else, stop for we found the id of one that is already processed
-        if status_has_processed_id?(id)
-          @found_all_ids = true
-          break
-        end
-        recorded_first_id = true
-      end
+
       # if we find the id that was process during the last run, stop
       # for we have found all of the new ids
       if status_has_processed_id?(id)
