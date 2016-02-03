@@ -394,7 +394,7 @@ def update_status
 end
 
 # pull out the id of each property from the link
-def pull_out_ids(search_results, record_last_id_status=false)
+def pull_out_ids(search_results)
   ids = []
   recorded_first_id = false
   search_results.each_with_index do |search_result, index|
@@ -406,8 +406,6 @@ def pull_out_ids(search_results, record_last_id_status=false)
         if status_has_processed_id?(id)
           @found_all_ids = true
           break
-        elsif record_last_id_status
-          add_status_processed_id(id)
         end
         recorded_first_id = true
       end

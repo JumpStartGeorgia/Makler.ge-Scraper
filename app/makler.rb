@@ -355,7 +355,7 @@ def make_requests
     end
 
     # get the ids for this page
-    pull_out_ids(search_results, i == 1)
+    pull_out_ids(search_results)
 
     @found_all_ids = true if reached_max_num_ids_to_scrape
 
