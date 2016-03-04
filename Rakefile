@@ -30,3 +30,15 @@ namespace :scraper do
     run_scraper_from_page(args[:start_page_num].to_i)
   end
 end
+
+namespace :database do
+  desc 'Print out number of posts by date'
+  task :number_postings_by_date do
+    require_relative 'app/database'
+
+    @postings_database = PostingsDatabase.new('config/database.yml')
+    data = @postings_database.number_postings_by_date
+
+    puts data
+  end
+end
