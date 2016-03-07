@@ -2,9 +2,12 @@ require_relative 'environment'
 
 # Logs all messages to files and stores in array for later usage (i.e. by error sheet)
 class CustomLogger
-  def initialize(name, log_file_path)
+  def initialize(name, file_name)
     @name = name
-    @logger = Logger.new(log_file_path)
+
+    dir_name = 'log'
+    Dir.mkdir dir_name unless File.exist?(dir_name)
+    @logger = Logger.new("#{dir_name}/#{file_name}")
 
     @info_messages = []
     @warning_messages = []

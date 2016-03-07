@@ -4,13 +4,6 @@ def environment_is_production
   return ENV['ENVIRONMENT'] == 'production'
 end
 
-def create_log(name, file_path)
-  Dir.mkdir 'log' unless File.exists?('log')
-  log = CustomLogger.new(name, "log/#{file_path}")
-
-  log
-end
-
 def json_template
   json = {}
   json[:posting_id] = nil
