@@ -7,7 +7,6 @@ end
 def create_log(name, file_path)
   Dir.mkdir 'log' unless File.exists?('log')
   log = CustomLogger.new(name, "log/#{file_path}")
-  @error_sheet.add_log(log)
 
   log
 end

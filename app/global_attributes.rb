@@ -1,12 +1,19 @@
 require_relative 'locales'
 
 @statistics_sheet = StatisticsSheet.new
-@error_sheet = ErrorSheet.new
 
 @data_files_log = create_log('Data Files Log', 'data_files.log')
 @missing_param_log = create_log('Makler Missing Params Log', 'makler_missing_params.log')
 @database_log = create_log('Database Log', 'database.log')
 @makler_log = create_log('Makler Log', 'makler.log')
+
+@error_sheet = ErrorSheet.new([
+  @data_files_log,
+  @missing_param_log,
+  @database_log,
+  @makler_log
+])
+
 
 # starting url
 @posting_url = "http://makler.ge/?pg=ann&id="

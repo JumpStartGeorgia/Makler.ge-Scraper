@@ -2,12 +2,8 @@ require_relative 'environment'
 
 # Combines all errors from all logs
 class ErrorSheet
-  def initialize(logs=[])
+  def initialize(logs)
     @logs = logs
-  end
-
-  def add_log(log)
-    @logs << log
   end
 
   def to_s
