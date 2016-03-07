@@ -43,8 +43,7 @@ def process_response(response)
     if span.length == 0
       # the title is not correct so assume this is
       # not a page that can be processed.
-      # remove the id from the status list to indicate it was processed
-      remove_status_json_id(id, locale_key.to_s)
+      @status.remove_json_id(id, locale_key)
 
       @makler_log.warn "the id #{id} with language #{locale} does not have any data"
 
@@ -234,8 +233,7 @@ def process_response(response)
     File.open(file_path, 'w'){|f| f.write(json.to_json)}
   end
 
-  # remove the id from the status list to indicate it was processed
-  remove_status_json_id(id, locale_key.to_s)
+  @status.remove_json_id(id, locale_key)
 end
 
 ##########################
@@ -294,7 +292,7 @@ def make_requests
     i+=1
   end
 
-  num_ids = num_json_ids_to_process
+  num_ids = @status.num_json_ids_to_process
 
   if num_ids == 0
     @makler_log.warn "There are no new IDs to process so stopping"
@@ -308,8 +306,8 @@ def make_requests
   #build hydra queue
   @locales.keys.each do |locale|
     # if there are any ids for this locale, procss them
-    if @status['ids_to_process']['json'][locale.to_s].length > 0
-      ids = @status['ids_to_process']['json'][locale.to_s].dup
+    if @status.json_ids_to_process[locale].length > 0
+      ids = @status.json_ids_to_process[locale].dup
       ids.each do |id|
         @statistics_sheet.increase_num_ids_processed_by_1
 

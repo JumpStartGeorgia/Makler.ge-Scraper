@@ -18,6 +18,7 @@ require 'zip'
 
 require_relative 'utilities'
 require_relative 'database'
+require_relative 'status'
 require_relative 'scraper_report'
 require_relative 'custom_logger'
 require_relative 'makler'

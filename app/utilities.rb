@@ -146,79 +146,6 @@ def get_param_value(url, key)
   return value
 end
 
-def get_status
-  status = nil
-  if File.exist? @status_file
-    status = JSON.parse(File.read(@status_file))
-  else
-    status = {}
-    status['last_id_processed'] = []
-    status['ids_to_process'] = {}
-    ['json', 'db'].each do |key|
-      status['ids_to_process'][key] = {}
-      @locales.keys.each do |locale|
-        status['ids_to_process'][key][locale.to_s] = []
-      end
-    end
-    File.open(@status_file, 'w') { |f| f.write(status.to_json) }
-  end
-  return status
-end
-
-# determine if ther eare any json ids to process
-def num_json_ids_to_process
-  count = 0
-
-  @locales.keys.each do |locale|
-    count += @status['ids_to_process']['json'][locale.to_s].length
-  end
-
-  return count
-end
-
-def save_new_status_ids(ids)
-  if !ids.nil? && ids.length > 0
-    ['json', 'db'].each do |key|
-      @locales.keys.each do |locale|
-        @status['ids_to_process'][key][locale.to_s] << ids
-        @status['ids_to_process'][key][locale.to_s].flatten!
-      end
-    end
-    update_status
-  end
-end
-
-def remove_status_json_id(id, locale)
-  @status['ids_to_process']['json'][locale.to_s].delete(id)
-  update_status
-end
-
-def remove_status_db_id(id, locale)
-  @status['ids_to_process']['db'][locale.to_s].delete(id)
-  update_status
-end
-
-def add_status_processed_id(id)
-  @status['last_id_processed'] << id
-  update_status
-end
-
-def status_has_processed_id?(id)
-  @status['last_id_processed'].length > 0 && @status['last_id_processed'].include?(id)
-end
-
-def empty_status_processed_ids
-  @status['last_id_processed'] = []
-  update_status
-end
-
-def update_status
-  @status = get_status if @status.nil?
-  if File.exists? @status_file
-    File.open(@status_file, 'w') { |f| f.write(@status.to_json) }
-  end
-end
-
 # pull out the id of each property from the link
 def pull_out_ids(search_results)
   ids = []
@@ -228,7 +155,7 @@ def pull_out_ids(search_results)
 
       # if we find the id that was process during the last run, stop
       # for we have found all of the new ids
-      if status_has_processed_id?(id)
+      if @status.has_processed_id?(id)
         @found_all_ids = true
         break
       end
@@ -239,7 +166,7 @@ def pull_out_ids(search_results)
     end
   end
 
-  save_new_status_ids(ids) if ids.length > 0
+  @status.save_new_ids(ids)
 end
 
 
@@ -563,7 +490,7 @@ def update_github
   @log.info "------------------------------"
   @log.info "updating git"
   @log.info "------------------------------"
-  x = Subexec.run "git add #{@db_dump_file} #{@status_file}"
+  x = Subexec.run "git add #{@db_dump_file} #{@status_file_name}"
   x = Subexec.run "git commit -m 'Updated database dump file and status.json with new makler.ge data'"
   x = Subexec.run "git push origin master"
 end
@@ -583,17 +510,6 @@ def compress_file(file_path)
   end
 
   File.delete(file_path)
-end
-
-def reset_status
-  empty_status = '{"last_id_processed":[],"ids_to_process":{"json":{"ka":[],"en":[]},"db":{"ka":[],"en":[]}}}'
-
-  open(@status_file, 'wb') do |file|
-    file.write(empty_status)
-  end
-
-  @status = nil
-  @status = get_status
 end
 
 def reached_max_num_ids_to_scrape

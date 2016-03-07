@@ -29,7 +29,7 @@ def test_run_scraper
   end
 
   # Start with empty status file
-  reset_status
+  @status.reset_file
 
   # Limit number of ads to be scraped
   @max_num_ids_to_scrape = 20
@@ -40,7 +40,7 @@ def test_run_scraper
   # Running the scraper for real updates status file and the db dump file
   # Checking out the files here prevents them from accidentally getting
   # committed
-  git_checkout_file(@status_file)
+  git_checkout_file(@status_file_name)
   git_checkout_file(@db_dump_file)
 end
 

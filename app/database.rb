@@ -18,13 +18,13 @@ def update_database
     files_processed = 0
     length = @data_path.split('/').length
 
-    empty_status_processed_ids
+    @status.reset_last_id_processed
 
     @locales.keys.each do |locale_key|
       locale = locale_key.to_s
       # if there are any ids for this locale, procss them
-      if @status['ids_to_process']['db'][locale].length > 0
-        ids = @status['ids_to_process']['db'][locale].dup
+      if @status.db_ids_for_locale?(locale)
+        ids = @status.db_ids_to_process[locale].dup
         ids.each do |id|
           parent_id = get_parent_id_folder(id)
           file_path = @data_path + parent_id + "/" + id + "/" + locale + "/" + @json_file
@@ -43,10 +43,9 @@ def update_database
               # create record
               postings_database.query(sql)
 
-              # remove the id from the status list to indicate it was processed
-              remove_status_db_id(id, locale)
+              @status.remove_db_id(id, locale)
 
-              add_status_processed_id(id)
+              @status.add_processed_id(id)
 
               files_processed += 1
               @statistics_sheet.increase_num_db_records_saved_by_1

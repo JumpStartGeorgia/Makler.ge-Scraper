@@ -47,7 +47,7 @@ require_relative 'locales'
 @response_file = 'response.html'
 @json_file = 'data.json'
 @db_config_path = 'config/database.yml'
-@status_file = 'status.json'
+@status_file_name = 'status.json'
 @db_dump_file = 'real-estate.sql.gz'
 
 # Tracks the number of ids pulled from ad lists to be scraped;
@@ -63,4 +63,4 @@ require_relative 'locales'
 # scrape runs
 @start_page_num = nil
 
-@status = get_status
+@status = Status.new(@status_file_name)
