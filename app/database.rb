@@ -31,21 +31,41 @@ require_relative 'utilities'
 
 class PostingsDatabase
   def initialize(db_config_path)
-    db_config = YAML.load(ERB.new(File.read(db_config_path)).result)
+    # make sure the file exists
+    unless File.exists?(db_config_path)
+      log.error "The #{db_config_path} does not exist"
+      exit
+    end
+
+    @db_config = YAML.load(ERB.new(File.read(db_config_path)).result)
 
     @mysql = Mysql2::Client.new(:host => db_config["host"], :port => db_config["port"], :database => db_config["database"],
                                 :username => db_config["username"], :password => db_config["password"],
                                 :encoding => db_config["encoding"], :reconnect => db_config["reconnect"])
   end
 
+  attr_reader :db_config, :mysql
+
   def query(sql)
     @mysql.query(sql)
+  end
+
+  def dump(log, db_dump_file)
+    log.info '------------------------------'
+    log.info 'dumping database'
+    log.info '------------------------------'
+
+    Subexec.run "mysqldump --single-transaction -u'#{db_config["username"]}' -p'#{db_config["password"]}' #{db_config["database"]} | gzip > \"#{db_dump_file}\" "
   end
 
   def number_postings_by_date
     output_query_result_to_console(
       query('SELECT date, COUNT(id) FROM postings GROUP BY date;')
     )
+  end
+
+  def close
+    mysql.close if mysql
   end
 
   private
@@ -71,19 +91,8 @@ def update_database
   log.info "**********************************************"
   log.info "**********************************************"
 
-  # make sure the file exists
-  if !File.exists?(@db_config_path)
-    log.error "The #{@db_config_path} does not exist"
-    exit
-  end
-
-  db_config = YAML.load(ERB.new(File.read(@db_config_path)).result)
-
   begin
-    # create connection
-    mysql = Mysql2::Client.new(:host => db_config["host"], :port => db_config["port"], :database => db_config["database"],
-                                :username => db_config["username"], :password => db_config["password"],
-                                :encoding => db_config["encoding"], :reconnect => db_config["reconnect"])
+    postings_database = PostingsDatabase.new(@db_config_path)
 
     ####################################################
     # if tables do not exist, create them
@@ -178,7 +187,7 @@ def update_database
           KEY `Index 16` (`address_street`),\
           CONSTRAINT uc_id_locale UNIQUE (posting_id, locale)\
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8"
-    mysql.query(sql)
+    postings_database.query(sql)
 
 
     ####################################################
@@ -203,14 +212,14 @@ def update_database
             compress_file(file_path)
 
             # delete the record if it already exists
-            sql = delete_record_sql(mysql, id, locale)
-            mysql.query(sql)
+            sql = delete_record_sql(postings_database.mysql, id, locale)
+            postings_database.query(sql)
 
             # create sql statement
-            sql = create_sql_insert(mysql, json, source, locale)
+            sql = create_sql_insert(postings_database.mysql, json, source, locale)
             if !sql.nil?
               # create record
-              mysql.query(sql)
+              postings_database.query(sql)
 
               # remove the id from the status list to indicate it was processed
               remove_status_db_id(id, locale)
@@ -236,14 +245,13 @@ def update_database
     log.info "It took #{Time.now - start} seconds to load #{files_processed} json files into the database"
     log.info "------------------------------"
 
-    # now dump the database
-    dump_database(db_config, log)
+    postings_database.dump(log, @db_dump_file)
 
   rescue Mysql2::Error => e
     log.info "+++++++++++++++++++++++++++++++++"
     log.error "Mysql error ##{e.errno}: #{e.error}"
     log.info "+++++++++++++++++++++++++++++++++"
   ensure
-    mysql.close if mysql
+    postings_database.close unless postings_database.nil?
   end
 end

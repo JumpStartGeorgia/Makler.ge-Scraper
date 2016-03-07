@@ -725,15 +725,6 @@ def delete_record_sql(mysql, posting_id, locale)
     return sql
 end
 
-# dump the database
-def dump_database(db_config, log)
-  log.info "------------------------------"
-  log.info "dumping database"
-  log.info "------------------------------"
-  Subexec.run "mysqldump --single-transaction -u'#{db_config["username"]}' -p'#{db_config["password"]}' #{db_config["database"]} | gzip > \"#{@db_dump_file}\" "
-end
-
-
 # update github with any changes
 def update_github
   unless environment_is_production
