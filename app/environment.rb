@@ -26,12 +26,13 @@ require_relative 'statistics_sheet'
 require_relative 'error_sheet'
 require_relative '../config/mail_config'
 
+
+@statistics_sheet = StatisticsSheet.new
+@error_sheet = ErrorSheet.new
+
 @data_files_log = create_log('Data Files Log', 'data_files.log')
 @missing_param_log = create_log('Makler Missing Params Log', 'makler_missing_params.log')
 @log = create_log('Makler Log', 'makler.log')
-
-@log.info "**********************************************"
-@log.info "**********************************************"
 
 # starting url
 @posting_url = "http://makler.ge/?pg=ann&id="
@@ -39,8 +40,6 @@ require_relative '../config/mail_config'
 @page_param = "&p="
 @lang_param = "&lan="
 
-# track processing status
-@status = get_status
 @found_all_ids = false
 
 
@@ -62,9 +61,6 @@ require_relative '../config/mail_config'
 @address_key = :address
 
 @non_number_price_text = ['Price Negotiable', 'ფასი შეთანხმებით']
-
-@statistics_sheet = StatisticsSheet.new
-@error_sheet = ErrorSheet.new
 
 @data_path = 'data/makler.ge/'
 @response_file = 'response.html'
@@ -215,3 +211,5 @@ require_relative '../config/mail_config'
 @locales[:en][:keys][:specs][:coefficient_k1] = 'coefficient k1:'
 @locales[:en][:keys][:specs][:coefficient_k2] = 'coefficient k2:'
 @locales[:en][:keys][:additional_info]  = 'additional information'
+
+@status = get_status

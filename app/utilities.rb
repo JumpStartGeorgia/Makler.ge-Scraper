@@ -1,5 +1,4 @@
-#!/usr/bin/env ruby
-# encoding: utf-8
+require_relative 'environment'
 
 def environment_is_production
   return ENV['ENVIRONMENT'] == 'production'
@@ -157,7 +156,7 @@ end
 
 def get_status
   status = nil
-  if File.exists? @status_file
+  if File.exist? @status_file
     status = JSON.parse(File.read(@status_file))
   else
     status = {}

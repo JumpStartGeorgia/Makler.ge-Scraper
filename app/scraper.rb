@@ -5,6 +5,9 @@ def scraper_main_parts
 end
 
 def run_scraper
+  @log.info "**********************************************"
+  @log.info "**********************************************"
+
   @start = Time.now
   @scraper_report = ScraperReport.new(@statistics_sheet, @error_sheet)
 
