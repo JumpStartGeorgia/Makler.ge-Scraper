@@ -1,3 +1,5 @@
+require_relative 'environment'
+
 # Combines all errors from all logs
 class ErrorSheet
   def initialize(logs=[])

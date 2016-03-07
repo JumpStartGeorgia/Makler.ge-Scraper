@@ -1,34 +1,4 @@
-#!/usr/bin/env ruby
-# encoding: utf-8
-
-####################################################
-# to load the jobs to a database, please have the following:
-# - database.yml file with the following keys and the appropriate values
-# - the user must have the ability to create database and tables
-# - this database.yml file is not saved into the git repository so
-#   passwords are not shared with the world
-# - yml keys:
-#     database:
-#     username:
-#     password:
-#     encoding: utf8
-#     host: localhost
-#     port: 3306
-#     reconnect: true
-
-# - you will need to create the database
-# - the tables will be created if they do not exist
-####################################################
-
-require 'mysql2'
-require 'yaml'
-require 'logger'
-require 'json'
-require 'erb'
-
-
-require_relative 'utilities'
-require_relative 'postings_database'
+require_relative 'environment'
 
 def update_database
   puts 'updating database'

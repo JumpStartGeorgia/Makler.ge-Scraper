@@ -1,3 +1,24 @@
+require_relative 'environment'
+
+####################################################
+# to load the jobs to a database, please have the following:
+# - database.yml file with the following keys and the appropriate values
+# - the user must have the ability to create database and tables
+# - this database.yml file is not saved into the git repository so
+#   passwords are not shared with the world
+# - yml keys:
+#     database:
+#     username:
+#     password:
+#     encoding: utf8
+#     host: localhost
+#     port: 3306
+#     reconnect: true
+
+# - you will need to create the database
+# - the tables will be created if they do not exist
+####################################################
+
 class PostingsDatabase
   def initialize(db_config_path, log)
     @log = log

@@ -1,3 +1,5 @@
+require_relative 'environment'
+
 # Logs all messages to files and stores in array for later usage (i.e. by error sheet)
 class CustomLogger
   def initialize(name, log_file_path)

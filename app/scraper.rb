@@ -1,11 +1,11 @@
-require 'pry-byebug'
-require_relative 'makler'
+require_relative 'environment'
 
 def scraper_main_parts
   make_requests
 end
 
 def run_scraper
+  @start = Time.now
   @scraper_report = ScraperReport.new(@statistics_sheet, @error_sheet)
 
   begin

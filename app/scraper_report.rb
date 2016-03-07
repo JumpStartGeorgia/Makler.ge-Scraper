@@ -1,5 +1,4 @@
-require 'mail'
-require_relative '../config/mail_config'
+require_relative 'environment'
 
 # Shares statistics about scraper run
 class ScraperReport

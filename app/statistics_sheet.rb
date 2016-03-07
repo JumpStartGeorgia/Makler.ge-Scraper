@@ -1,3 +1,5 @@
+require_relative 'environment'
+
 # Stores statistics about a scraper run
 class StatisticsSheet
   def initialize
