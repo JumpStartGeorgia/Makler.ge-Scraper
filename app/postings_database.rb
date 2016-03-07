@@ -1,11 +1,7 @@
 class PostingsDatabase
-  def initialize(db_config_path)
-    unless File.exists?(db_config_path)
-      log.error "The #{db_config_path} does not exist"
-      exit
-    end
-
-    @db_config = YAML.load(ERB.new(File.read(db_config_path)).result)
+  def initialize(db_config_path, log)
+    @log = log
+    @db_config = get_db_config(db_config_path)
 
     @mysql = Mysql2::Client.new(:host => db_config["host"], :port => db_config["port"], :database => db_config["database"],
                                 :username => db_config["username"], :password => db_config["password"],
@@ -14,7 +10,7 @@ class PostingsDatabase
     create_postings_table
   end
 
-  attr_reader :db_config, :mysql
+  attr_reader :db_config, :mysql, :log
 
   def query(sql)
     @mysql.query(sql)
@@ -39,6 +35,16 @@ class PostingsDatabase
   end
 
   private
+
+  def get_db_config(db_config_path)
+    unless File.exist?(db_config_path)
+      msg = "The #{db_config_path} does not exist"
+      log.error(msg)
+      abort(msg)
+    end
+
+    YAML.load(ERB.new(File.read(db_config_path)).result)
+  end
 
   def create_postings_table
     query(

@@ -36,16 +36,13 @@ def update_database
 
   start = Time.now
 
-  # log file to record messages
-  # delete existing log file
-  #File.delete('hr.gov.ge.log') if File.exists?('hr.gov.ge.log')
   log = create_log('Database Log', 'database.log')
 
-  log.info "**********************************************"
-  log.info "**********************************************"
-
   begin
-    postings_database = PostingsDatabase.new(@db_config_path)
+    postings_database = PostingsDatabase.new(@db_config_path, log)
+
+    postings_database.log.info '**********************************************'
+    postings_database.log.info '**********************************************'
 
     ####################################################
     # load the data
@@ -98,16 +95,14 @@ def update_database
       end
     end
 
-    log.info "------------------------------"
-    log.info "It took #{Time.now - start} seconds to load #{files_processed} json files into the database"
-    log.info "------------------------------"
+    postings_database.log.info "------------------------------"
+    postings_database.log.info "It took #{Time.now - start} seconds to load #{files_processed} json files into the database"
+    postings_database.log.info "------------------------------"
 
     postings_database.dump(log, @db_dump_file)
 
   rescue Mysql2::Error => e
-    log.info "+++++++++++++++++++++++++++++++++"
-    log.error "Mysql error ##{e.errno}: #{e.error}"
-    log.info "+++++++++++++++++++++++++++++++++"
+    postings_database.log.error "Mysql error ##{e.errno}: #{e.error}"
   ensure
     postings_database.close unless postings_database.nil?
   end
