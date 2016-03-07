@@ -3,9 +3,7 @@ class PostingsDatabase
     @log = log
     @db_config = get_db_config(db_config_path)
 
-    @mysql = Mysql2::Client.new(:host => db_config["host"], :port => db_config["port"], :database => db_config["database"],
-                                :username => db_config["username"], :password => db_config["password"],
-                                :encoding => db_config["encoding"], :reconnect => db_config["reconnect"])
+    @mysql = make_mysql_connection
 
     create_postings_table
   end
@@ -44,6 +42,17 @@ class PostingsDatabase
     end
 
     YAML.load(ERB.new(File.read(db_config_path)).result)
+  end
+
+  def make_mysql_connection
+    Mysql2::Client.new(
+      host: db_config['host'],
+      port: db_config['port'],
+      database: db_config['database'],
+      username: db_config['username'],
+      password: db_config['password'],
+      encoding: db_config['encoding'],
+      reconnect: db_config['reconnect'])
   end
 
   def create_postings_table
