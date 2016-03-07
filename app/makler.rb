@@ -7,7 +7,7 @@ def process_response(response)
   locale_key = get_locale_key(locale)
 
   if id.nil? || locale.nil? || locale_key.nil?
-    @log.error "response url is not in expected format: #{response.request.url}; expected url to have params of 'id' and 'lan'"
+    @makler_log.error "response url is not in expected format: #{response.request.url}; expected url to have params of 'id' and 'lan'"
     return
   end
 
@@ -20,7 +20,7 @@ def process_response(response)
   doc = Nokogiri::HTML(response.body)
 
   if doc.css('td.table_content').length != 2
-    @log.error "the response does not have any content to process"
+    @makler_log.error "the response does not have any content to process"
     return
   end
 
@@ -46,7 +46,7 @@ def process_response(response)
       # remove the id from the status list to indicate it was processed
       remove_status_json_id(id, locale_key.to_s)
 
-      @log.warn "the id #{id} with language #{locale} does not have any data"
+      @makler_log.warn "the id #{id} with language #{locale} does not have any data"
 
       return
     end
@@ -282,7 +282,7 @@ def make_requests
 
     # if the search results has either no response, stop
     if search_results.length == 0
-      @log.error "the response does not have any content to process for url #{url}"
+      @makler_log.error "the response does not have any content to process for url #{url}"
       break
     end
 
@@ -297,7 +297,7 @@ def make_requests
   num_ids = num_json_ids_to_process
 
   if num_ids == 0
-    @log.warn "There are no new IDs to process so stopping"
+    @makler_log.warn "There are no new IDs to process so stopping"
     return
   end
 
@@ -320,7 +320,7 @@ def make_requests
         request.on_complete do |response|
           if response.success?
             # put success callback here
-            @log.info("#{response.request.url} - success")
+            @makler_log.info("#{response.request.url} - success")
 
             @statistics_sheet.increase_num_ids_successfully_processed_by_1
 
@@ -328,24 +328,24 @@ def make_requests
             process_response(response)
           elsif response.timed_out?
             # aw hell no
-            @log.error("#{response.request.url} - got a time out")
+            @makler_log.error("#{response.request.url} - got a time out")
             @statistics_sheet.increase_num_ids_timed_out_by_1
           elsif response.code == 0
             # Could not get an http response, something's wrong.
-            @log.error("#{response.request.url} - no response: #{response.return_message}")
+            @makler_log.error("#{response.request.url} - no response: #{response.return_message}")
             @statistics_sheet.increase_num_ids_with_no_response_by_1
           else
             # Received a non-successful http response.
-            @log.error("#{response.request.url} - HTTP request failed: #{response.code.to_s}")
+            @makler_log.error("#{response.request.url} - HTTP request failed: #{response.code.to_s}")
             @statistics_sheet.increase_num_ids_with_http_request_failure_by_1
           end
 
           # decrease counter of items to process
           total_left_to_process -= 1
           if total_left_to_process == 0
-            @log.info "------------------------------"
-            @log.info "It took #{Time.now - @start} seconds to process #{total_to_process} items"
-            @log.info "------------------------------"
+            @makler_log.info "------------------------------"
+            @makler_log.info "It took #{Time.now - @start} seconds to process #{total_to_process} items"
+            @makler_log.info "------------------------------"
 
             # now update the database
             update_database

@@ -5,8 +5,8 @@ def scraper_main_parts
 end
 
 def run_scraper
-  @log.info "**********************************************"
-  @log.info "**********************************************"
+  @makler_log.info "**********************************************"
+  @makler_log.info "**********************************************"
 
   @start = Time.now
   @scraper_report = ScraperReport.new(@statistics_sheet, @error_sheet)
@@ -14,7 +14,7 @@ def run_scraper
   begin
     scraper_main_parts
   rescue StandardError => e
-    @log.error("Scraper stopped mid-run due to error: #{e}")
+    @makler_log.error("Scraper stopped mid-run due to error: #{e}")
   end
 
   @statistics_sheet.end_scrape_now
