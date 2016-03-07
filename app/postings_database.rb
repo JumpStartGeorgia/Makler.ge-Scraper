@@ -35,7 +35,7 @@ class PostingsDatabase
     @mysql.query(sql)
   end
 
-  def dump(log, db_dump_file)
+  def dump(db_dump_file)
     log.info '------------------------------'
     log.info 'dumping database'
     log.info '------------------------------'

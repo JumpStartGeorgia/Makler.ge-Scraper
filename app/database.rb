@@ -6,10 +6,8 @@ def update_database
 
   start = Time.now
 
-  log = create_log('Database Log', 'database.log')
-
   begin
-    postings_database = PostingsDatabase.new(@db_config_path, log)
+    postings_database = PostingsDatabase.new(@db_config_path, @database_log)
 
     postings_database.log.info '**********************************************'
     postings_database.log.info '**********************************************'
@@ -69,7 +67,7 @@ def update_database
     postings_database.log.info "It took #{Time.now - start} seconds to load #{files_processed} json files into the database"
     postings_database.log.info "------------------------------"
 
-    postings_database.dump(log, @db_dump_file)
+    postings_database.dump(@db_dump_file)
 
   rescue Mysql2::Error => e
     postings_database.log.error "Mysql error ##{e.errno}: #{e.error}"
