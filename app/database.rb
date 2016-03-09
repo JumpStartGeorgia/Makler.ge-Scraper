@@ -25,6 +25,8 @@ def update_database
 
       # if there are any ids for this locale, procss them
       if @status.db_ids_for_locale?(locale)
+
+        binding.pry
         ids = @status.db_ids_to_process[locale].dup
         ids.each do |id|
           parent_id = get_parent_id_folder(id)

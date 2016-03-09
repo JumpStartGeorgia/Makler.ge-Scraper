@@ -52,6 +52,7 @@ class Status
   end
 
   def db_ids_for_locale?(locale)
+    locale = locale.to_sym
     fail if db_ids_to_process[locale].nil?
 
     db_ids_to_process[locale].length > 0
