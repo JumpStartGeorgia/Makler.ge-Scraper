@@ -14,7 +14,14 @@ def run_scraper
   begin
     scraper_main_parts
   rescue StandardError => e
-    @makler_log.error("Scraper stopped mid-run due to error: #{e}")
+    puts 'Scraper stopped due to error --- Check email report for details'
+
+    error_message = e.to_s.empty? ? 'No message' : e.to_s
+    @makler_log.error("Scraper stopped mid-run due to error: #{error_message}")
+    @makler_log.error('ERROR BACKTRACE:')
+    e.backtrace.each do |backtrace_line|
+      @makler_log.error(backtrace_line)
+    end
   end
 
   @statistics_sheet.end_scrape_now
