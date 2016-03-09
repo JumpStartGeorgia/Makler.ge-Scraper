@@ -22,6 +22,7 @@ def update_database
 
     @locales.keys.each do |locale_key|
       locale = locale_key.to_s
+
       # if there are any ids for this locale, procss them
       if @status.db_ids_for_locale?(locale)
         ids = @status.db_ids_to_process[locale].dup
