@@ -21,32 +21,30 @@ def update_database
     @status.reset_last_id_processed
 
     @locales.keys.each do |locale_key|
-      locale = locale_key.to_s
-
       # if there are any ids for this locale, procss them
-      if @status.db_ids_for_locale?(locale)
+      if @status.db_ids_for_locale?(locale_key)
 
-        binding.pry
-        ids = @status.db_ids_to_process[locale].dup
+        ids = @status.db_ids_to_process[locale_key].dup
+
         ids.each do |id|
           parent_id = get_parent_id_folder(id)
-          file_path = @data_path + parent_id + "/" + id + "/" + locale + "/" + @json_file
+          file_path = "#{@data_path}#{parent_id}/#{id}/#{locale_key}/#{@json_file}"
           if File.exists?(file_path)
             # pull in json
             json = JSON.parse(File.read(file_path))
             compress_file(file_path)
 
             # delete the record if it already exists
-            sql = delete_record_sql(postings_database.mysql, id, locale)
+            sql = delete_record_sql(postings_database.mysql, id, locale_key.to_s)
             postings_database.query(sql)
 
             # create sql statement
-            sql = create_sql_insert(postings_database.mysql, json, source, locale)
+            sql = create_sql_insert(postings_database.mysql, json, source, locale_key.to_s)
             if !sql.nil?
               # create record
               postings_database.query(sql)
 
-              @status.remove_db_id(id, locale)
+              @status.remove_db_id(id, locale_key)
 
               @status.add_processed_id(id)
 
