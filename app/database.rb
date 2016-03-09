@@ -16,56 +16,56 @@ def update_database
     # load the data
     ####################################################
     files_processed = 0
-    length = @data_path.split('/').length
 
     @status.reset_last_id_processed
 
     @locales.keys.each do |locale_key|
       # if there are any ids for this locale, procss them
-      if @status.db_ids_for_locale?(locale_key)
+      next unless @status.db_ids_for_locale?(locale_key)
 
-        ids = @status.db_ids_to_process[locale_key].dup
+      ids = @status.db_ids_to_process[locale_key].dup
 
-        ids.each do |id|
-          parent_id = get_parent_id_folder(id)
-          file_path = "#{@data_path}#{parent_id}/#{id}/#{locale_key}/#{@json_file}"
-          if File.exists?(file_path)
-            # pull in json
-            json = JSON.parse(File.read(file_path))
-            compress_file(file_path)
+      ids.each do |id|
+        parent_id = get_parent_id_folder(id)
+        file_path = "#{@data_path}#{parent_id}/#{id}/#{locale_key}/#{@json_file}"
 
-            # delete the record if it already exists
-            sql = delete_record_sql(postings_database.mysql, id, locale_key.to_s)
-            postings_database.query(sql)
+        next unless File.exist?(file_path)
 
-            # create sql statement
-            sql = create_sql_insert(postings_database.mysql, json, source, locale_key.to_s)
-            if !sql.nil?
-              # create record
-              postings_database.query(sql)
+        # pull in json
+        json = JSON.parse(File.read(file_path))
+        compress_file(file_path)
 
-              @status.remove_db_id(id, locale_key)
+        # delete the record if it already exists
+        sql = delete_record_sql(postings_database.mysql, id, locale_key.to_s)
+        postings_database.query(sql)
 
-              @status.add_processed_id(id)
+        # create sql statement
+        sql = create_sql_insert(postings_database.mysql, json, source, locale_key.to_s)
 
-              files_processed += 1
-              @statistics_sheet.increase_num_db_records_saved_by_1
+        next if sql.nil?
 
-              ad_date = Date.strptime(json['date'], '%Y-%m-%d')
-              @statistics_sheet.update_saved_records_date_range(ad_date)
+        # create record
+        postings_database.query(sql)
 
-              if files_processed % 100 == 0
-                puts "#{files_processed} json files processed so far"
-              end
-            end
-          end
+        @status.remove_db_id(id, locale_key)
+
+        @status.add_processed_id(id)
+
+        files_processed += 1
+        @statistics_sheet.increase_num_db_records_saved_by_1
+
+        ad_date = Date.strptime(json['date'], '%Y-%m-%d')
+        @statistics_sheet.update_saved_records_date_range(ad_date)
+
+        if files_processed % 100 == 0
+          puts "#{files_processed} json files processed so far"
         end
       end
     end
 
-    postings_database.log.info "------------------------------"
+    postings_database.log.info '------------------------------'
     postings_database.log.info "It took #{Time.now - start} seconds to load #{files_processed} json files into the database"
-    postings_database.log.info "------------------------------"
+    postings_database.log.info '------------------------------'
 
     postings_database.dump(@db_dump_file)
 
