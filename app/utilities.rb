@@ -162,11 +162,9 @@ def pull_out_ids(search_results)
 
       @num_ids_to_scrape += 1
 
-      ids << id
+      @status.save_new_id(id)
     end
   end
-
-  @status.save_new_ids(ids)
 end
 
 

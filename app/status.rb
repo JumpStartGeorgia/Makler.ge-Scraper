@@ -67,24 +67,19 @@ class Status
     total
   end
 
-  def save_new_ids(ids)
-    return if ids.nil?
+  def save_new_id(id)
+    return if id.nil?
 
-    ids.each do |id|
-      save_new_id(id)
+    [:en, :ka].each do |locale|
+      json_ids_to_process[locale] << id
+      db_ids_to_process[locale] << id
     end
+
 
     update_file
   end
 
   private
-
-  def save_new_id(id)
-    [:en, :ka].each do |locale|
-      json_ids_to_process[locale] << id
-      db_ids_to_process[locale] << id
-    end
-  end
 
   def set_attributes_from_file
     parsed_file = JSON.parse(File.read(file))
@@ -97,13 +92,15 @@ class Status
   def create_new_file
     @last_id_processed = []
 
-    hash_of_locale_arrays = {
+    @json_ids_to_process = {
       en: [],
       ka: []
     }
 
-    @json_ids_to_process = hash_of_locale_arrays
-    @db_ids_to_process = hash_of_locale_arrays
+    @db_ids_to_process = {
+      en: [],
+      ka: []
+    }
 
     update_file
   end
