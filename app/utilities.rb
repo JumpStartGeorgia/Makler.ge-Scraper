@@ -149,18 +149,18 @@ end
 # pull out the id of each property from the link
 def pull_out_ids(search_results)
   search_results.each do |search_result|
-    id = get_param_value(search_result['href'], 'id')
+    post_id = get_param_value(search_result['href'], 'id')
 
-    next if id.nil?
+    next if post_id.nil?
 
-    if @status.has_processed_id?(id) || reached_max_num_ids_to_scrape
+    if @status.has_processed_id?(post_id) || reached_max_num_ids_to_scrape
       @finished_scraping_new_post_ids = true
       break
     end
 
     @num_ids_scraped += 1
 
-    @status.save_new_id(id)
+    @status.save_new_id(post_id)
   end
 end
 
