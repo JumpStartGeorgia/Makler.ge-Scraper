@@ -43,14 +43,14 @@ class PostingsDatabase
     Subexec.run "mysqldump --single-transaction -u'#{db_config["username"]}' -p'#{db_config["password"]}' #{db_config["database"]} | gzip > \"#{db_dump_file}\" "
   end
 
+  def close
+    mysql.close if mysql
+  end
+
   def number_postings_by_date
     output_query_result_to_console(
       query('SELECT date, COUNT(id) FROM postings GROUP BY date;')
     )
-  end
-
-  def close
-    mysql.close if mysql
   end
 
   private
