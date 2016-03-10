@@ -19,6 +19,8 @@ def run_scraper(args = {})
     @max_num_ids_to_scrape = args[:max_num_ids_to_scrape]
   end
 
+  @start_page_num = args[:start_from_page] unless args[:start_from_page].nil?
+
   @makler_log.info "**********************************************"
   @makler_log.info "**********************************************"
 
@@ -46,9 +48,4 @@ def run_scraper(args = {})
   # committed
   git_checkout_file(@status_file_name) if args[:checkout_status_file]
   git_checkout_file(@db_dump_file) if args[:checkout_db_dump_file]
-end
-
-def run_scraper_from_page(start_page_num)
-  @start_page_num = start_page_num
-  run_scraper
 end

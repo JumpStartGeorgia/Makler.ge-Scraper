@@ -32,7 +32,10 @@ namespace :scraper do
   # break up getting the old data into multiple scraper runs
   desc 'Run scraper, but start gathering IDs at specified page'
   task :run_from_page, [:start_page_num] do |_t, args|
-    run_scraper_from_page(args[:start_page_num].to_i)
+    start_page_num = args[:start_page_num].to_i
+
+    run_scraper(
+      start_from_page: start_page_num)
   end
 end
 
