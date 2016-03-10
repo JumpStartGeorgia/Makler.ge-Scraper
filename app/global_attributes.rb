@@ -52,7 +52,7 @@ require_relative 'locales'
 
 # Tracks the number of ids pulled from ad lists to be scraped;
 # @max_num_ids_to_scrape is compared to this to determine when to stop
-@num_ids_to_scrape = 0
+@num_ids_scraped = 0
 
 # Set this to limit the number of ids scraped (useful in test run)
 # Note: Scraper likely will not stop precisely at this number

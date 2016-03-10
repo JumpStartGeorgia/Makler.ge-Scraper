@@ -158,7 +158,7 @@ def pull_out_ids(search_results)
       break
     end
 
-    @num_ids_to_scrape += 1
+    @num_ids_scraped += 1
 
     @status.save_new_id(id)
   end
@@ -508,7 +508,7 @@ def compress_file(file_path)
 end
 
 def reached_max_num_ids_to_scrape
-  !@max_num_ids_to_scrape.nil? && @num_ids_to_scrape >= @max_num_ids_to_scrape
+  !@max_num_ids_to_scrape.nil? && @num_ids_scraped >= @max_num_ids_to_scrape
 end
 
 def compress_data_files
