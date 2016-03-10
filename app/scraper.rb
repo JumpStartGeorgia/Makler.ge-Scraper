@@ -4,7 +4,21 @@ def scraper_main_parts
   make_requests
 end
 
-def run_scraper
+def run_scraper(args = {})
+  if args[:fail_on_production] && environment_is_production
+    puts 'Test runs are not allowed on production environment'
+    puts 'Please change ENVIRONMENT in .env file to not be "production"'
+    exit
+  end
+
+  # Start with empty status file
+  @status.reset_file if args[:start_with_default_status]
+
+  # Limit number of ads to be scraped
+  unless args[:max_num_ids_to_scrape].nil?
+    @max_num_ids_to_scrape = args[:max_num_ids_to_scrape]
+  end
+
   @makler_log.info "**********************************************"
   @makler_log.info "**********************************************"
 
@@ -26,29 +40,12 @@ def run_scraper
 
   @statistics_sheet.end_scrape_now
   @scraper_report.send_email
-end
-
-def test_run_scraper
-  if environment_is_production
-    puts 'Test runs are not allowed on production environment'
-    puts 'Please change ENVIRONMENT in .env file to not be "production"'
-    exit
-  end
-
-  # Start with empty status file
-  @status.reset_file
-
-  # Limit number of ads to be scraped
-  @max_num_ids_to_scrape = 20
-
-  # Begin scraper run
-  run_scraper
 
   # Running the scraper for real updates status file and the db dump file
   # Checking out the files here prevents them from accidentally getting
   # committed
-  git_checkout_file(@status_file_name)
-  git_checkout_file(@db_dump_file)
+  git_checkout_file(@status_file_name) if args[:checkout_status_file]
+  git_checkout_file(@db_dump_file) if args[:checkout_db_dump_file]
 end
 
 def run_scraper_from_page(start_page_num)

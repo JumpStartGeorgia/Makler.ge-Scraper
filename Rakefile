@@ -8,7 +8,12 @@ namespace :scraper do
 
   desc 'Test run scraper'
   task :test_run do
-    test_run_scraper
+    run_scraper(
+      fail_on_production: true,
+      start_with_default_status: true,
+      max_num_ids_to_scrape: 20,
+      checkout_status_file: true,
+      checkout_db_dump_file: true)
   end
 
   desc 'Compress all files in data directory'
