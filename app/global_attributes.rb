@@ -64,3 +64,4 @@ require_relative 'locales'
 @start_page_num = nil
 
 @status = Status.new(@status_file_name)
+@postings_database = PostingsDatabase.new(@db_config_path, @database_log)

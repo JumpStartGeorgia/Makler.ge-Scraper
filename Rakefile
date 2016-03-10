@@ -34,11 +34,6 @@ end
 namespace :database do
   desc 'Print out number of posts by date'
   task :number_postings_by_date do
-    require_relative 'app/database'
-
-    @postings_database = PostingsDatabase.new('config/database.yml')
-    data = @postings_database.number_postings_by_date
-
-    puts data
+    puts @postings_database.number_postings_by_date
   end
 end

@@ -7,10 +7,8 @@ def update_database
   start = Time.now
 
   begin
-    postings_database = PostingsDatabase.new(@db_config_path, @database_log)
-
-    postings_database.log.info '**********************************************'
-    postings_database.log.info '**********************************************'
+    @postings_database.log.info '**********************************************'
+    @postings_database.log.info '**********************************************'
 
     ####################################################
     # load the data
@@ -36,16 +34,16 @@ def update_database
         compress_file(file_path)
 
         # delete the record if it already exists
-        sql = delete_record_sql(postings_database.mysql, id, locale_key.to_s)
-        postings_database.query(sql)
+        sql = delete_record_sql(@postings_database.mysql, id, locale_key.to_s)
+        @postings_database.query(sql)
 
         # create sql statement
-        sql = create_sql_insert(postings_database.mysql, json, source, locale_key.to_s)
+        sql = create_sql_insert(@postings_database.mysql, json, source, locale_key.to_s)
 
         next if sql.nil?
 
         # create record
-        postings_database.query(sql)
+        @postings_database.query(sql)
 
         @status.remove_db_id(id, locale_key)
 
@@ -63,15 +61,15 @@ def update_database
       end
     end
 
-    postings_database.log.info '------------------------------'
-    postings_database.log.info "It took #{Time.now - start} seconds to load #{files_processed} json files into the database"
-    postings_database.log.info '------------------------------'
+    @postings_database.log.info '------------------------------'
+    @postings_database.log.info "It took #{Time.now - start} seconds to load #{files_processed} json files into the database"
+    @postings_database.log.info '------------------------------'
 
-    postings_database.dump(@db_dump_file)
+    @postings_database.dump(@db_dump_file)
 
   rescue Mysql2::Error => e
-    postings_database.log.error "Mysql error ##{e.errno}: #{e.error}"
+    @postings_database.log.error "Mysql error ##{e.errno}: #{e.error}"
   ensure
-    postings_database.close unless postings_database.nil?
+    @postings_database.close unless @postings_database.nil?
   end
 end
