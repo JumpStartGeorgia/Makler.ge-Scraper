@@ -150,9 +150,10 @@ end
 def pull_out_ids(search_results)
   search_results.each do |search_result|
     image_link = search_result.css('div.ann_thmb a')[0]
-
     post_id = get_param_value(image_link['href'], 'id')
-    post_date = Date.new(2016, 3, 9)
+
+    post_date_str = search_result.css('.fge .float_right .orange_num')[0].text
+    post_date = Date.strptime(post_date_str, '%d.%m.%Y')
 
     next if post_id.nil?
 
