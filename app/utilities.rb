@@ -149,7 +149,9 @@ end
 # pull out the id of each property from the link
 def pull_out_ids(search_results)
   search_results.each do |search_result|
-    post_id = get_param_value(search_result['href'], 'id')
+    image_link = search_result.css('div.ann_thmb a')[0]
+
+    post_id = get_param_value(image_link['href'], 'id')
     post_date = Date.new(2016, 3, 9)
 
     next if post_id.nil?

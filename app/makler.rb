@@ -275,8 +275,7 @@ def make_requests
     # get the html
     doc = Nokogiri::HTML(open(url))
 
-    # pull out the links for this page
-    search_results = doc.css('td.table_content div.main_search div.ann_thmb a')
+    search_results = doc.css('td.table_content div.main_search > table > tr')
 
     # if the search results has either no response, stop
     if search_results.length == 0
@@ -286,7 +285,6 @@ def make_requests
 
     # get the ids for this page
     pull_out_ids(search_results)
-
 
     i+=1
   end
