@@ -87,7 +87,12 @@ class Status
     parsed_file = JSON.parse(File.read(file))
 
     @last_id_processed = parsed_file['last_id_processed']
-    @last_scraped_date = Date.strptime(parsed_file['last_scraped_date'])
+    date_string = parsed_file['last_scraped_date']
+    if date_string.nil?
+      @last_scraped_date = default_last_scraped_date
+    else
+      @last_scraped_date = Date.strptime(date_string)
+    end
     @json_ids_to_process = parsed_file['ids_to_process']['json']
     @db_ids_to_process = parsed_file['ids_to_process']['db']
   end
