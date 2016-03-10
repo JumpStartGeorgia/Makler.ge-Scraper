@@ -1,6 +1,9 @@
 require_relative 'environment'
 
 def scraper_main_parts
+  @makler_log.info "**********************************************"
+  @makler_log.info "**********************************************"
+
   make_requests
 end
 
@@ -20,9 +23,6 @@ def run_scraper(args = {})
   end
 
   @start_page_num = args[:start_from_page] unless args[:start_from_page].nil?
-
-  @makler_log.info "**********************************************"
-  @makler_log.info "**********************************************"
 
   @start = Time.now
   @scraper_report = ScraperReport.new(@statistics_sheet, @error_sheet)
