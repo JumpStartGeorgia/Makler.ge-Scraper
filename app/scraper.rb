@@ -4,6 +4,10 @@ def scraper_main_parts
   @makler_log.info "**********************************************"
   @makler_log.info "**********************************************"
 
+  @saved_ids_for_last_scraped_date = @postings_database.ids_for_date(
+    @status.last_scraped_date
+  )
+
   make_requests
 end
 
