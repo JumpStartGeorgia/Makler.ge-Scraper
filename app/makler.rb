@@ -287,7 +287,6 @@ def make_requests
     # get the ids for this page
     pull_out_ids(search_results)
 
-    @finished_scraping_new_post_ids = true if reached_max_num_ids_to_scrape
 
     i+=1
   end
