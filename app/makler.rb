@@ -267,7 +267,7 @@ def make_requests
     i = @start_page_num
   end
 
-  while !@found_all_ids && i <= last_page
+  while !@finished_scraping_new_post_ids && i <= last_page
     puts "page #{i}"
     # create the url
     url = @serach_url + @lang_param + @locales[:ka][:id] + @page_param + i.to_s
@@ -287,7 +287,7 @@ def make_requests
     # get the ids for this page
     pull_out_ids(search_results)
 
-    @found_all_ids = true if reached_max_num_ids_to_scrape
+    @finished_scraping_new_post_ids = true if reached_max_num_ids_to_scrape
 
     i+=1
   end

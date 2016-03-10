@@ -21,7 +21,7 @@ require_relative 'locales'
 @page_param = "&p="
 @lang_param = "&lan="
 
-@found_all_ids = false
+@finished_scraping_new_post_ids = false
 
 
 ####################################################

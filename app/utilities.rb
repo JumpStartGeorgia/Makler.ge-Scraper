@@ -156,7 +156,7 @@ def pull_out_ids(search_results)
       # if we find the id that was process during the last run, stop
       # for we have found all of the new ids
       if @status.has_processed_id?(id)
-        @found_all_ids = true
+        @finished_scraping_new_post_ids = true
         break
       end
 
