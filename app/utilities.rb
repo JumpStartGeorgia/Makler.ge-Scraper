@@ -150,10 +150,11 @@ end
 def pull_out_ids(search_results)
   search_results.each do |search_result|
     post_id = get_param_value(search_result['href'], 'id')
+    post_date = Date.new(2016, 3, 9)
 
     next if post_id.nil?
 
-    if @status.has_processed_id?(post_id) || reached_max_num_ids_to_scrape
+    if post_date < @status.last_scraped_date || reached_max_num_ids_to_scrape
       @finished_scraping_new_post_ids = true
       break
     end
