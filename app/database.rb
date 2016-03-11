@@ -54,6 +54,7 @@ def update_database
 
         ad_date = Date.strptime(json['date'], '%Y-%m-%d')
         @statistics_sheet.update_saved_records_date_range(ad_date)
+        @status.update_last_scraped_date(ad_date)
 
         if files_processed % 100 == 0
           puts "#{files_processed} json files processed so far"

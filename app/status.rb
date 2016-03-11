@@ -36,6 +36,11 @@ class Status
     update_file
   end
 
+  def update_last_scraped_date(new_date)
+    @last_scraped_date = new_date if last_scraped_date < new_date
+    update_file
+  end
+
   def remove_db_id(id, locale)
     fail if db_ids_to_process[locale].nil?
 
