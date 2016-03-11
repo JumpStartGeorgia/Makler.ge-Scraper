@@ -46,4 +46,9 @@ namespace :data do
   task :compress_files do
     compress_data_files
   end
+
+  desc 'Move response and json files into date directory'
+  task :restructure_with_date_directory do
+    restructure_data_with_date_directory
+  end
 end
