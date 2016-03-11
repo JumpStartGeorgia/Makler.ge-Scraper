@@ -16,11 +16,6 @@ namespace :scraper do
       checkout_db_dump_file: true)
   end
 
-  desc 'Compress all files in data directory'
-  task :compress_data_files do
-    compress_data_files
-  end
-
   namespace :schedule do
     desc 'Schedule cron job to scrape daily at 4 AM'
     task :run_daily do
@@ -43,5 +38,12 @@ namespace :database do
   desc 'Print out number of posts by date'
   task :number_postings_by_date do
     puts @postings_database.number_postings_by_date
+  end
+end
+
+namespace :data do
+  desc 'Compress all files in data directory'
+  task :compress_files do
+    compress_data_files
   end
 end
