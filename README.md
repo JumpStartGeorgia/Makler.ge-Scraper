@@ -31,7 +31,7 @@ to manually test the scraper. Differences include:
 
 When you run the scraper, the following happens:
 
-1. __Choose Ads to Scrape__: The scraper checks the database for the last scraped date. It grabs the IDs for all postings posted on and after that date, but only saves posts not already in the database to `ids_to_process` in `status.json`.
+1. __Choose Ads to Scrape__: The scraper checks the database for the last scraped date. It grabs the IDs for all postings posted on and after that date, and then saves posts not already in the database to `ids_to_process` in `status.json`.
 2. __Scrape Ads__: Requests are sent to makler.ge to the ads listed in `ids_to_process` and are saved as `data.json` files in the `data` folder.
 3. __Save Ads to Database__: The ad info in the new `data.json` files are saved to the database.
 4. __Update Github with New Data__: The database is dumped to `real-estate.sql.gz` and pushed to github, along with the new `status.json` file.
