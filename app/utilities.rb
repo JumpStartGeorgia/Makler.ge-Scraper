@@ -496,9 +496,9 @@ def update_github
 
   puts 'pushing database to github'
 
-  @log.info "------------------------------"
-  @log.info "updating git"
-  @log.info "------------------------------"
+  @makler_log.info "------------------------------"
+  @makler_log.info "updating git"
+  @makler_log.info "------------------------------"
   x = Subexec.run "git add #{@db_dump_file} #{@status_file_name}"
   x = Subexec.run "git commit -m 'Updated database dump file and status.json with new makler.ge data'"
   x = Subexec.run "git push origin master"
