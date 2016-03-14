@@ -61,6 +61,11 @@ class PostingsDatabase
     query(sql).map { |row| row['posting_id'] }
   end
 
+  def last_scraped_date
+    sql = 'SELECT max(date) FROM postings'
+    query(sql).map { |row| row['max(date)'] }[0]
+  end
+
   private
 
   def get_db_config(db_config_path)

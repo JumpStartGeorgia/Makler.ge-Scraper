@@ -66,4 +66,4 @@ require_relative 'locales'
 @status = Status.new(@status_file_name)
 @postings_database = PostingsDatabase.new(@db_config_path, @database_log)
 
-@earliest_day_to_scrape = @status.last_scraped_date
+@earliest_day_to_scrape = @postings_database.last_scraped_date
