@@ -52,3 +52,10 @@ namespace :data do
     restructure_data_with_date_directory
   end
 end
+
+namespace :status do
+  desc 'Reset status file'
+  task :reset do
+    @status.reset_file
+  end
+end
