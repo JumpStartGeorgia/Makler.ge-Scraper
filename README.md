@@ -24,20 +24,18 @@ No automatic test suite, but you can use
 to manually test the scraper. Differences include:
 - ENVIRONMENT cannot be set to production
 - Only 20 ads will be scraped
-- Emails will be sent to mailcatcher
+- Emails will be sent to [mailcatcher](http://mailcatcher.me/)
 - Database dump and status.json will not be pushed to github
-
-Check [the code](https://github.com/JumpStartGeorgia/Makler.ge-Scraper/blob/email/app/scraper.rb) for further differences. To setup mailcatcher, [see here](http://mailcatcher.me/).
 
 ## How it Works
 
 When you run the scraper, the following happens:
 
-1. Choose Ads to Scrape: The scraper checks the status.json for the `last_id_processed`. Requests are sent to makler.ge's lists of ads to gather ids to be scraped. These ids are saved in status.json's `ids_to_process`; this process continues until the last_id_processed ids are found.
-2. Scrape Ads: Requests are sent to makler.ge to the ads listed in `ids_to_process` and are saved as `data.json` files in the `data` folder
-3. Save Ads to Database: The ad info in the new `data.json` files are saved to the database.
-4. Update Github with New Data: The database is dumped to `real-estate.sql.gz` and pushed to github, along with the new `status.json` file.
-5. Send Email Report on Scraper Run: A report about the scrape run, including basic statistics and logged errors, is sent to the recipient specified in the `.env` file.
+1. __Choose Ads to Scrape__: The scraper checks the database for the last scraped date. It grabs the IDs for all postings posted on and after that date, but only saves posts not already in the database to `ids_to_process` in `status.json`.
+2. __Scrape Ads__: Requests are sent to makler.ge to the ads listed in `ids_to_process` and are saved as `data.json` files in the `data` folder.
+3. __Save Ads to Database__: The ad info in the new `data.json` files are saved to the database.
+4. __Update Github with New Data__: The database is dumped to `real-estate.sql.gz` and pushed to github, along with the new `status.json` file.
+5. __Send Email Report on Scraper Run__: A report about the scrape run, including basic statistics and logged errors, is sent to the recipient specified in the `.env` file.
 
 ## The Data
 
