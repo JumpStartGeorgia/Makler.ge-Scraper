@@ -21,11 +21,11 @@ def update_database
       # if there are any ids for this locale, procss them
       next unless @status.db_ids_for_locale?(locale_key)
 
-      ids = @status.db_ids_to_process[locale_key].dup
+      postings = @status.db_ids_to_process[locale_key].dup
 
-      ids.each do |id|
-        parent_id = get_parent_id_folder(id)
-        file_path = "#{@data_path}#{parent_id}/#{id}/#{locale_key}/#{@json_file}"
+      postings.each do |posting|
+        parent_id = get_parent_id_folder(posting[:id])
+        file_path = "#{@data_path}#{parent_id}/#{posting[:id]}/#{locale_key}/#{@json_file}"
 
         next unless File.exist?(file_path)
 
@@ -34,7 +34,7 @@ def update_database
         compress_file(file_path)
 
         # delete the record if it already exists
-        sql = delete_record_sql(@postings_database.mysql, id, locale_key.to_s)
+        sql = delete_record_sql(@postings_database.mysql, posting[:id], locale_key.to_s)
         @postings_database.query(sql)
 
         # create sql statement
@@ -45,9 +45,9 @@ def update_database
         # create record
         @postings_database.query(sql)
 
-        @status.remove_db_id(id, locale_key)
+        @status.remove_db_id(posting[:id], locale_key)
 
-        @status.add_processed_id(id)
+        @status.add_processed_id(posting[:id])
 
         files_processed += 1
         @statistics_sheet.increase_num_db_records_saved_by_1
