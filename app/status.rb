@@ -4,12 +4,7 @@ class Status
   def initialize(file_path)
     @file = file_path
 
-    unless File.exist? file
-      create_new_file
-      return
-    end
-
-    set_attributes_from_file
+    create_new_file
   end
 
   attr_accessor :file,
@@ -70,17 +65,6 @@ class Status
   end
 
   private
-
-  def set_attributes_from_file
-    parsed_file = JSON.parse(File.read(file))
-
-    @json_ids_to_process = parsed_file['ids_to_process']['json']
-    @db_ids_to_process = parsed_file['ids_to_process']['db']
-
-    # Convert string property keys to symbols
-    @json_ids_to_process = @json_ids_to_process.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
-    @db_ids_to_process = @db_ids_to_process.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
-  end
 
   def create_new_file
     @json_ids_to_process = {
