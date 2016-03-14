@@ -13,27 +13,12 @@ class Status
   end
 
   attr_accessor :file,
-                :last_id_processed,
                 :json_ids_to_process,
                 :db_ids_to_process,
                 :last_scraped_date
 
   def reset_file
     create_new_file
-  end
-
-  def reset_last_id_processed
-    @last_id_processed = []
-    update_file
-  end
-
-  def has_processed_id?(id)
-    @last_id_processed.include? id
-  end
-
-  def add_processed_id(id)
-    @last_id_processed << id
-    update_file
   end
 
   def update_last_scraped_date(new_date)
@@ -95,7 +80,6 @@ class Status
   def set_attributes_from_file
     parsed_file = JSON.parse(File.read(file))
 
-    @last_id_processed = parsed_file['last_id_processed']
     date_string = parsed_file['last_scraped_date']
     if date_string.nil?
       @last_scraped_date = default_last_scraped_date
@@ -107,8 +91,6 @@ class Status
   end
 
   def create_new_file
-    @last_id_processed = []
-
     @json_ids_to_process = {
       en: [],
       ka: []
@@ -128,18 +110,12 @@ class Status
     Date.today
   end
 
-  def update_last_id_processed(new_value)
-    @last_id_processed = new_value
-    update_file
-  end
-
   def update_file
     File.open(file, 'w') { |f| f.write(to_json) }
   end
 
   def to_json
     {
-      last_id_processed: last_id_processed,
       last_scraped_date: last_scraped_date,
       ids_to_process: {
         json: json_ids_to_process,

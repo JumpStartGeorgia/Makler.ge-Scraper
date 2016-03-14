@@ -15,8 +15,6 @@ def update_database
     ####################################################
     files_processed = 0
 
-    @status.reset_last_id_processed
-
     @locales.keys.each do |locale_key|
       # if there are any ids for this locale, procss them
       next unless @status.db_ids_for_locale?(locale_key)
@@ -46,8 +44,6 @@ def update_database
         @postings_database.query(sql)
 
         @status.remove_db_id(posting[:id], locale_key)
-
-        @status.add_processed_id(posting[:id])
 
         files_processed += 1
         @statistics_sheet.increase_num_db_records_saved_by_1
