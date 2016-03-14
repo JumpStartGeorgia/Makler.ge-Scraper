@@ -1,6 +1,6 @@
 require_relative 'environment'
 
-def process_response(response)
+def process_response(response, post_date)
   # pull out the locale and id from the url
   id = get_param_value(response.request.url, 'id')
   locale = get_param_value(response.request.url, 'lan')
@@ -14,7 +14,7 @@ def process_response(response)
   # get the name of the folder for this id
   # - the name is the id minus it's last 3 digits
   id_folder = get_parent_id_folder(id)
-  folder_path = @data_path + id_folder + "/" + id + "/" + locale_key.to_s + "/"
+  folder_path = @data_path + id_folder + "/" + id + "/" + post_date.strftime('%Y-%m-%d') + "/" + locale_key.to_s + "/"
 
   # get the response body
   doc = Nokogiri::HTML(response.body)

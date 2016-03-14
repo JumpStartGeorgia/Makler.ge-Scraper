@@ -82,7 +82,7 @@ def make_requests
             @statistics_sheet.increase_num_ids_successfully_processed_by_1
 
             # process the response
-            process_response(response)
+            process_response(response, posting[:date])
           elsif response.timed_out?
             # aw hell no
             @makler_log.error("#{response.request.url} - got a time out")
