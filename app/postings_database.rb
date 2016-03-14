@@ -63,7 +63,9 @@ class PostingsDatabase
 
   def last_scraped_date
     sql = 'SELECT max(date) FROM postings'
-    query(sql).map { |row| row['max(date)'] }[0]
+    return query(sql).map { |row| row['max(date)'] }[0]
+  rescue Mysql2::Error => e
+    return nil
   end
 
   private
