@@ -11,6 +11,7 @@ class StatisticsSheet
     @num_ids_with_no_response = 0
     @num_ids_with_http_request_failure = 0
     @num_db_records_saved = 0
+    @num_duplicate_postings_found = 0
     @saved_records_start_date = nil
     @saved_records_end_date = nil
   end
@@ -23,6 +24,7 @@ class StatisticsSheet
               :num_ids_with_no_response,
               :num_ids_with_http_request_failure,
               :num_db_records_saved,
+              :num_duplicate_postings_found,
               :saved_records_start_date,
               :saved_records_end_date
 
@@ -54,6 +56,10 @@ class StatisticsSheet
     @num_db_records_saved += 1
   end
 
+  def increase_num_duplicate_postings_found_by_1
+    @num_duplicate_postings_found += 1
+  end
+
   def update_saved_records_date_range(new_date)
     if saved_records_start_date.nil? || new_date < saved_records_start_date
       @saved_records_start_date = new_date
@@ -76,7 +82,7 @@ class StatisticsSheet
       Scrape duration: #{scrape_duration}
 
       --- Report on Requests Made to makler.ge ---
-
+      Total number of duplicate postings found: #{num_duplicate_postings_found}
       Total number of ids processed: #{num_ids_processed}
 
       Number of ids successfully processed: #{num_ids_successfully_processed}

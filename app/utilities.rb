@@ -146,6 +146,11 @@ def get_param_value(url, key)
   return value
 end
 
+def posting_is_duplicate(post_id, post_date)
+  (post_date == @status.last_scraped_date) &&
+    (@saved_ids_for_last_scraped_date.include? post_id)
+end
+
 # pull out the id of each property from the link
 def pull_out_ids(search_results)
   search_results.each do |search_result|
@@ -163,6 +168,11 @@ def pull_out_ids(search_results)
     end
 
     @num_ids_scraped += 1
+
+    if posting_is_duplicate(post_id, post_date)
+      @statistics_sheet.increase_num_duplicate_postings_found_by_1
+      next
+    end
 
     @status.save_new_posting_to_process(post_id, post_date)
   end

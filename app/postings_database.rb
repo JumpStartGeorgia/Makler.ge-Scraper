@@ -56,9 +56,9 @@ class PostingsDatabase
   def ids_for_date(date)
     date_str = date.strftime('%Y-%m-%d')
     abort if date_str.nil?
-    sql = "SELECT id FROM postings WHERE date LIKE '#{date_str}%';"
+    sql = "SELECT posting_id FROM postings WHERE date LIKE '#{date_str}%';"
 
-    query(sql).map { |row| row['id'] }
+    query(sql).map { |row| row['posting_id'] }
   end
 
   private
