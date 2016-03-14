@@ -25,7 +25,7 @@ def update_database
 
       postings.each do |posting|
         parent_id = get_parent_id_folder(posting[:id])
-        file_path = "#{@data_path}#{parent_id}/#{posting[:id]}/#{locale_key}/#{@json_file}"
+        file_path = "#{@data_path}#{parent_id}/#{posting[:id]}/#{posting[:date]}/#{locale_key}/#{@json_file}"
 
         next unless File.exist?(file_path)
 
