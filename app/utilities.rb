@@ -147,7 +147,7 @@ def get_param_value(url, key)
 end
 
 def posting_is_duplicate(post_id, post_date)
-  (post_date == @status.last_scraped_date) &&
+  (post_date == @earliest_day_to_scrape) &&
     (@saved_ids_for_last_scraped_date.include? post_id)
 end
 
