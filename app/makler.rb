@@ -304,12 +304,12 @@ def make_requests
   @locales.keys.each do |locale|
     # if there are any ids for this locale, procss them
     if @status.json_ids_to_process[locale].length > 0
-      ids = @status.json_ids_to_process[locale].dup
-      ids.each do |id|
+      postings = @status.json_ids_to_process[locale].dup
+      postings.each do |posting|
         @statistics_sheet.increase_num_ids_processed_by_1
 
         # build the url
-        url = @posting_url + id + @lang_param + @locales[locale][:id]
+        url = @posting_url + posting[:id] + @lang_param + @locales[locale][:id]
         request = Typhoeus::Request.new("#{url}", followlocation: true)
 
         request.on_complete do |response|

@@ -74,14 +74,18 @@ class Status
     total
   end
 
-  def save_new_id(id)
-    return if id.nil?
+  def save_new_posting_to_process(id, date)
+    return if id.nil? || date.nil?
+
+    post = {
+      id: id,
+      date: date
+    }
 
     [:en, :ka].each do |locale|
-      json_ids_to_process[locale] << id
-      db_ids_to_process[locale] << id
+      json_ids_to_process[locale] << post.clone
+      db_ids_to_process[locale] << post.clone
     end
-
 
     update_file
   end

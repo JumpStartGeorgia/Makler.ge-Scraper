@@ -164,7 +164,7 @@ def pull_out_ids(search_results)
 
     @num_ids_scraped += 1
 
-    @status.save_new_id(post_id)
+    @status.save_new_posting_to_process(post_id, post_date)
   end
 end
 
