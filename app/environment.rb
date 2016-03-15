@@ -27,6 +27,5 @@ require_relative 'postings_database'
 require_relative 'statistics_sheet'
 require_relative 'error_sheet'
 require_relative '../config/mail_config'
-require_relative 'restructure_data_with_date'
 
 require_relative 'global_attributes'
