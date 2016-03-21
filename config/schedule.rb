@@ -19,7 +19,7 @@
 
 # Learn more: http://github.com/javan/whenever
 
-job_type :rake, "cd :path && bundle exec rake :task --silent :output"
+job_type :rake, "cd :path && bundle exec rake :task --quiet :output"
 set :output, '/log/daily_cron_job.log'
 
 every 1.day, at: '4:00 am' do
