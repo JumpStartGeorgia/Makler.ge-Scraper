@@ -19,7 +19,7 @@ namespace :scraper do
   namespace :schedule do
     desc 'Schedule cron job to scrape daily at 4 AM'
     task :run_daily do
-      `bundle exec whenever -w`
+      `bundle exec whenever -i`
     end
   end
 
